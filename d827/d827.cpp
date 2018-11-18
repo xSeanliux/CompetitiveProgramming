@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    int input;
+    while (cin >> input)
+    {
+        int dozen = input/12;
+        int number = input % 12;
+        int cost = dozen * 50 + number * 5;
+        cout << cost;
+    }
+}
