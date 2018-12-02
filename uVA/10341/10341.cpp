@@ -8,43 +8,27 @@ double f(double x){
 }
 
 int main(){
-
     while(cin >> p >> q >> r >> s >> t >> u){
-        //cout << f(0.7554) << endl;
-        double ans;
-        bool flag = (f(0) <= 0);
-        bool hasSol = false;
-        for(double i = 0; i <= 10000; i++){
-            //cout << i/10000 << "  " << f(i/10000) << ": "<< (f(i/10000) <= 0) << endl;
-           if(f(i/10000) == 0){
-                ans = i/10000;
-                hasSol = true;
-                break;
-           } else if((f(i/10000) <= 0) == !flag){
-                hasSol = true;
-                for(double j = i - 1; j <= i + 1; j += 0.0001){
-                    bool flag2 = (f((j-1)/10000) <= 0);
-                    //cout << j/10000 << "  " << f(j/10000) << ": "<< (f(j/10000) <= 0) << endl;
-                    if(f(j/10000) == 0){
-                        ans = round(j*1000)/10000000;
-                        break;
-
-                    }
-                    else if((f(j/10000) <= 0) == !flag){
-                            ans = round(j*1000)/10000000;
-                            break;
-                    }
-                }
-                break;
-           }
+        if(!f(0)){
+            cout << "0.0000" << endl;
+            continue;
+        } else if(!f(1)){
+            cout << "1.0000" << endl;
+            continue;
         }
-        if(!hasSol){
-            cout << "No solution" << endl;
-        } else {
-            //cout << ans << endl;
-            printf("%.4f\n", ans);
+        double U = 1, L = 0, M = 0.5; //make sure U is negative, L is positive
+        while(abs(f(M)) > 0.000001 && U > L && M < 1 && M > 0){
+            if(f(M) > 0){
+                L = M;
+            } else if(f(M) < 0){
+                U = M;
+            }
+            M = (U + L)/2;
+            //cout << "M = " << M << ", f(M) = " << f(M) << endl;
         }
-
+        //cout << " M: " << M << endl;
+        if(abs(f(M)) < 0.000001 && M <= 1 && M >= 0) printf("%.4f\n", M);
+        else cout << "No solution" << endl;
     }
 
 }

@@ -89,7 +89,7 @@ int main()
     iHat.b = 0;
     while(cin >> c)
     {
-        cout << c << endl;
+        //cout << c << endl;
         for(int aj = 0; aj < c; aj++)
         {
             if(aj) printf("-1\n");

@@ -21,7 +21,6 @@ int main(){
             //cout << "Coin: " << coinarr[i] << endl;
             for(int j = sum - coinarr[i]; j >= 0; j--){
                 if(canGo[j]){
-
                     canGo[j + coinarr[i]] = true;
                     //cout << j + coinarr[i] << " can be reached" << endl;
                 }

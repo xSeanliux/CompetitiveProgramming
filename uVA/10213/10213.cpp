@@ -1,8 +1,13 @@
 #include <iostream>
+#include <string.h>
 #include <math.h>
 using namespace std;
 
-long int s, n, a, b;
+double s, n, a, b;
+
+string add;
+
+
 
 
 int main(){
@@ -11,11 +16,11 @@ int main(){
         cin >> n;
         n;
         a = pow(2, n-1);
-        if(n < 5) printf("%d\n", a);
+        if(n <= 5) printf("%.0f\n", a);
         else {
             a = n*(n-1)/2;
             b = n*(n-1)*(n-2)*(n-3)/24;
-            printf("%lld\n", a + b + 1);
+            printf("%.0f\n", a + b + 1);
         }
     }
 }
