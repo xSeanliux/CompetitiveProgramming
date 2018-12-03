@@ -1,28 +1,22 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
-int n;
-
-int arr[5005];
+int N;
 
 int main(){
-    while(cin >> n){
-        if(!n) return 0;
-        for(int i = 0; i < n; i++){
+    while(cin >> N){
+        if(!N) return 0;
+        int arr[N];
+        for(int i = 0; i < N; i++){
             cin >> arr[i];
         }
-        int N = n - 1;
-
-        sort(arr, arr + n);
-        for(int i = 0; i < n; i++){
-            cout << arr[i] << " ";
+        sort(arr, arr + N);
+        long long int ans = 0;
+        ans += (N-1)*arr[0];
+        for(int i = 1; i < N; i++){
+            ans += (N - i)*arr[i];
         }
-        cout << endl;
-        int tCost = N * arr[0];
-        for(int i = 1; i < n; i++){
-            tCost += arr[i] * (n - i);
-        }
-        printf("%d\n", tCost);
+        cout << ans << endl;
     }
-
 }

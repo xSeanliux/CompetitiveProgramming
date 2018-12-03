@@ -10,6 +10,7 @@ struct Node{
     Node *rightNode;
 };
 
+
 int N, arr[1000];
 
 Node* buildTree(int left, int right){
@@ -87,7 +88,7 @@ int getMax(Node* n, int left, int right){
 
 void mod(Node *n, int left, int right, int M){
     if(n->maxVal < M) return;
-    if(left == right){
+    if(n->left == n->right){
         n->sum %= M;
         n->maxVal %= M;
     } else {

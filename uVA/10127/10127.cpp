@@ -1,15 +1,27 @@
 #include <iostream>
+#define INF 169696969
 using namespace std;
 int N;
 
-int ans(int n, double current, long long int iteration){
-    if((int)current % n == 0) return iteration;
-    else return ans(n, 10*current + 1, iteration + 1);
-}
 
 int main(){
-    for(int i = 1; i < 50; i++){
-        if(i % 2 == 0 || i % 5 == 0) continue;
-        printf("f(%d) : %d\n", i, ans(i, 1.0, 1));
+    while(cin >> N){
+        int mod[N+1]; //modulus value of how many zeroes
+        mod[1] = 1;
+        for(int i = 2; i <= N+1; i++){
+            mod[i] = (10*mod[i-1] + 1) % N;
+            //cout << "mod[" << i << "] = " <<mod[i] << endl;
+        }
+        int minDist = INF;
+        for(int i = 1; i <= N + 1; i++){
+            for(int j = i + 1; j <= N + 1; j++){
+                if(mod[i] == mod[j]){
+                    minDist = min(minDist, j - i);
+                    break;
+                }
+            }
+        }
+        cout << minDist << endl;
     }
 }
+

@@ -1,27 +1,34 @@
 #include <iostream>
+#include <string.h>
 using namespace std;
 
-int c, a, b;
+int T;
+string a, b;
 
-int rev(int n){ //
-    while(!(n % 10))
-        n /= 10;
-    int k = 0;
-    while(n){
-        int r = n % 10;
-        n -= r;
-        k += r;
-        n /= 10;
-        k *= 10;
+string revAdd(string a, string b){
+    if(a.length() < b.length()) swap(a, b);
+    while(b.length() < a.length()) b += '0';
+    int l = a.length();
+    bool carry = false;
+    string res = "";
+    for(int i = 0 ; i < l; i++){
+        if(a[i] - '0' + b[i] - '0' + carry > 9){
+            res += (char)(a[i] - '0' + b[i] + carry - 10);
+            carry = true;
+        } else {
+            res += (char)(a[i] - '0' + b[i] + carry);
+            carry = false;
+        }
     }
-    k /= 10;
-    return k;
+    if(carry) res += '1';
+    while(res[0] == '0') res = res.substr(1);
+    return res;
 }
 
 int main(){
-    cin >> c;
-    for(int i = 0; i < c; i++){
+    cin >> T;
+    while(T--){
         cin >> a >> b;
-        cout << rev( rev(a) + rev(b) ) << endl;
+        cout << revAdd(a, b) << endl;
     }
 }
