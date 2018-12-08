@@ -4,7 +4,7 @@
 using namespace std;
 
 string s;
-char charArr[100 + 5][100 + 5];
+char charArr[1000 + 5][1000 + 5];
 int sentences, l, maxL = 0;
 
 int main(){
@@ -24,16 +24,16 @@ int main(){
 
     }
     for(int i = 0; i < maxL; i++){
-            for(int j = sentences - 1; j >= 0; j--){
-                //printf charArr[j][i]
-                if(charArr[j][i] == (char)230){
-                    printf(" ");
-                } else {
-                    printf("%c", charArr[j][i]);
-                }
+        for(int j = sentences - 1; j >= 0; j--){
+            //printf charArr[j][i]
+            if(charArr[j][i] == (char)230){
+                printf(" ");
+            } else {
+                printf("%c", charArr[j][i]);
             }
-       printf("\n");
         }
+        printf("\n");
+    }
 
 
 }
