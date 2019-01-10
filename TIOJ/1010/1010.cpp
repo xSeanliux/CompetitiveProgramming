@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
-
+// By S
 string P, Q;
 
 int main(){

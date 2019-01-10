@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <queue>
 using namespace std;
-
+// By S
 struct Data{
     double inGrid, inHand, step;
 };

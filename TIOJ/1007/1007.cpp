@@ -1,7 +1,7 @@
 #include <iostream>
 #include <math.h>
 using namespace std;
-
+//By S
 int N, M;
 
 int main(){

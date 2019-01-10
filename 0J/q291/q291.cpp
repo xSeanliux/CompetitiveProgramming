@@ -21,7 +21,6 @@ void DFS(int currentNode, int iteration)
             }
             cout << endl;
         }
-
         for(int i = 1; i <= 5; i++)
         {
             if(adjacent[currentNode][i] == 1)  //if there is a road and we haven't went there yet.
@@ -37,17 +36,10 @@ void DFS(int currentNode, int iteration)
 
             }
         }
-
-
-
-
-
 }
 
 
 int main()
 {
     DFS(1,0);
-
-
 }
