@@ -1,0 +1,492 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage{tabularx}
+\usepackage[normalem]{ulem}
+
+%%%%%%%%%%%%%%%紙張大小設定%%%%%%%%%%%%%%%
+% \paperwidth=65cm
+% \paperheight=160cm
+
+%%%%%%%%%%%%%%%引入Package%%%%%%%%%%%%%%%
+\usepackage[margin=3cm]{geometry} % 上下左右距離邊緣2cm
+\usepackage{amsmath,amsthm,amssymb} % 引入 AMS 數學環境
+\usepackage{yhmath}      % math symbol
+\usepackage{graphicx}    % 圖形插入用
+%\graphicspath{{images/}}  % 搜尋圖片目錄
+%\usepackage{wrapfig}     % 文繞圖
+\usepackage{floatflt}    % 浮動 figure
+%\usepackage{float}       % 浮動環境
+%\usepackage{subfig}      % subfigures
+%\usepackage{caption3}    % caption 增強
+%\usepackage{setspace}    % 控制空行
+\usepackage{fontspec}    % 加這個就可以設定字體
+\usepackage{type1cm}	 % 設定fontsize用
+\usepackage{titlesec}   % 設定section等的字體
+\usepackage{titling}    % 加強 title 功能
+\usepackage{fancyhdr}   % 頁首頁尾
+\usepackage{tabularx}   % 加強版 table
+\usepackage[square, comma, numbers, super, sort&compress]{natbib}
+% cite加強版
+\usepackage[unicode=true, pdfborder={0 0 0}, bookmarksdepth=-1]{hyperref}
+% ref加強版
+%\usepackage{soul}       % highlight
+%\usepackage{ulem}       % 字加裝飾
+\usepackage[usenames, dvipsnames]{color}  % 可以使用顏色
+%\usepackage{framed}     % 可以加文字方框
+\usepackage{enumerate}  % 加強版enumerate
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage{indentfirst}
+\usepackage{ulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{mathtools}
+\newcommand{\defeq}{\vcentcolon=}
+\usepackage{xeCJK}  % xelatex 中文
+%\usepackage{CJKulem}	% 中文字裝飾
+\setCJKmainfont[AutoFakeBold=3,AutoFakeSlant=.4]{Kaiti TC Regular}
+\defaultCJKfontfeatures{AutoFakeBold=3,AutoFakeSlant=.4}
+%設定中文為系統上的字型，而英文不去更動，使用原TeX字型
+
+\XeTeXlinebreaklocale "zh"            
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+%%%%%%%%%%%%%%%字體大小設定%%%%%%%%%%%%%%%
+%\def\normalsize{\fontsize{10}{15}\selectfont}
+%\def\large{\fontsize{40}{60}\selectfont}
+%\def\Large{\fontsize{50}{75}\selectfont}
+%\def\LARGE{\fontsize{90}{20}\selectfont}
+% \def\huge{\fontsize{34}{51}\selectfont}
+% \def\Huge{\fontsize{38}{57}\selectfont}
+
+%%%%%%%%%%%%%%%Theme Input%%%%%%%%%%%%%%%%
+%\input{themes/chapter/neat}
+
+%%%%%%%%%%%titlesec settings%%%%%%%%%%%%%%
+%\titleformat{\chapter}{\bf\Huge}
+%{\arabic{section}}{0em}{}
+%\titleformat{\section}{\centering\Large}
+%{\arabic{section}}{0em}{}
+%\titleformat{\subsection}{\large}
+%{\arabic{subsection}}{0em}{}
+%\titleformat{\subsubsection}{\bf\normalsize}
+%{\arabic{subsubsection}}{0em}{}
+%\titleformat{command}[shape]{format}{label}
+%{編號與標題距離}{before}[after]
+
+%%%%%%%%%%%%variable settings%%%%%%%%%%%%%%
+%\numberwithin{equation}{section}
+%\setcounter{secnumdepth}{4}  %章節標號深度
+%\setcounter{tocdepth}{1}  %目錄深度
+
+%%%%%%%%%%%%%%%頁面設定%%%%%%%%%%%%%%%
+\setlength{\headheight}{15pt}  %with titling
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\parindent=24pt %設定縮排的距離
+%\parskip=1ex  %設定行距
+%\pagestyle{empty}  % empty: 無頁碼
+%\pagestyle{fancy}  % fancy: fancyhdr
+
+%use with fancygdr
+%\lhead{\leftmark}
+%\chead{}
+%\rhead{}
+%\lfoot{}
+%\cfoot{}
+%\rfoot{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+%\fancypagestyle{firststyle}
+%{
+%\fancyhf{}
+%\fancyfoot[C]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+%\renewcommand{\headrule}{\rule{\textwidth}{\headrulewidth}}
+%}
+
+%%%%%%%%%%%%%%%重定義一些command%%%%%%%%%%%%%%%
+\renewcommand{\contentsname}{目錄}  %設定目錄的標題名稱
+\renewcommand{\refname}{參考資料}  %設定參考資料的標題名稱
+\renewcommand{\abstractname}{\LARGE Abstract} %設定摘要的標題名稱
+
+%%%%%%%%%%%%%%%特殊功能函數符號設定%%%%%%%%%%%%%%%
+
+\newcommand{\np}[1]{\\[{#1}] \indent}
+\newcommand{\transpose}[1]{{#1}^\mathrm{T}}
+\newcommand{\adj}{\mathrm{adj}}
+%%%% Geometry Symbol %%%%
+\newcommand{\degree}{^\circ}
+\newcommand{\Arc}[1]{\wideparen{{#1}}}
+\newcommand{\Line}[1]{\overleftrightarrow{{#1}}}
+\newcommand{\Ray}[1]{\overrightarrow{{#1}}}
+\newcommand{\Segment}[1]{\overline{{#1}}}
+
+\usepackage{graphicx}
+
+\newcommand{\barleftarrow}{\mathrel{\ooalign{$\rightarrow$\cr%
+			\kern-.15ex\raise.275ex\hbox{\scalebox{1}[0.522]{$\mid$}}\cr}}}
+%%%%%%%%%%%%%%%證明、結論、定義等等的環境%%%%%%%%%%%%%%%
+\renewcommand{\proofname}{\bf 證明:} %修改Proof 標頭
+\newtheoremstyle{mystyle}% 自定義Style
+{6pt}{15pt}%       上下間距
+{}%               內文字體
+{}%               縮排
+{\bf}%            標頭字體
+{.}%              標頭後標點
+{1em}%            內文與標頭距離
+{}%               Theorem head spec (can be left empty, meaning 'normal')
+
+% 改用粗體，預設 remark style 是斜體
+\theoremstyle{mystyle}	% 定理環境Style
+\newtheorem{theorem}{定理}
+\newtheorem{definition}{定義}
+\newtheorem{formula}{公式}
+\newtheorem{condition}{條件}
+\newtheorem{supposition}{假設}
+\newtheorem{conclusion}{結論}
+\newtheorem{lemma}{引理}
+\newtheorem{property}{性質}
+\newtheorem{pb}{Pro}
+\newtheorem{ex}{Example}
+\newtheorem{pr}{Problem}
+\newtheorem{df}{Definition}
+\newtheorem{thr}{Theorem}
+
+
+\makeatletter
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
+%\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\definecolor{editorGray}{rgb}{0.95, 0.95, 0.95}
+\definecolor{editorOcher}{rgb}{1, 0.5, 0} % #FF7F00 -> rgb(239, 169, 0)
+\definecolor{editorGreen}{rgb}{0, 0.5, 0} % #007C00 -> rgb(0, 124, 0)
+\definecolor{editorPurple}{RGB}{75,0,130}
+\definecolor{editorYellow}{RGB}{242, 245, 86}
+%\definecolor{editorBlue}{RGB}{}
+\definecolor{orange}{rgb}{1,0.45,0.13}		
+\definecolor{olive}{rgb}{0.17,0.59,0.20}
+\definecolor{brown}{rgb}{0.69,0.31,0.31}
+\definecolor{purple}{rgb}{0.38,0.18,0.81}
+\definecolor{lightblue}{rgb}{0.1,0.57,0.7}
+\definecolor{lightred}{rgb}{1,0.4,0.5}
+% CSS
+\lstdefinelanguage{CSS3}{
+	alsoletter = {-},
+	morekeywords={accelerator,azimuth,background,background-attachment,
+		background-color,background-image,background-position,
+		background-position-x,background-position-y,background-repeat,
+		behavior,border,border-bottom,border-bottom-color,
+		border-bottom-style,border-bottom-width,border-collapse,
+		border-color,border-left,border-left-color,border-left-style,
+		border-left-width,border-right,border-right-color,
+		border-right-style,border-right-width,border-spacing,
+		border-style,border-top,border-top-color,border-top-style,
+		border-top-width,border-width,bottom,caption-side,clear,
+		clip,color,content,counter-increment,counter-reset,cue,
+		cue-after,cue-before,cursor,direction,display,elevation,
+		empty-cells,filter,float,font,font-family,font-size,
+		font-size-adjust,font-stretch,font-style,font-variant,
+		font-weight,height,ime-mode,include-source,
+		layer-background-color,layer-background-image,layout-flow,
+		layout-grid,layout-grid-char,layout-grid-char-spacing,
+		layout-grid-line,layout-grid-mode,layout-grid-type,left,
+		letter-spacing,line-break,line-height,list-style,
+		list-style-image,list-style-position,list-style-type,margin,
+		margin-bottom,margin-left,margin-right,margin-top,
+		marker-offset,marks,max-height,max-width,min-height,
+		min-width,-moz-binding,-moz-border-radius,
+		-moz-border-radius-topleft,-moz-border-radius-topright,
+		-moz-border-radius-bottomright,-moz-border-radius-bottomleft,
+		-moz-border-top-colors,-moz-border-right-colors,
+		-moz-border-bottom-colors,-moz-border-left-colors,-moz-opacity,
+		-moz-outline,-moz-outline-color,-moz-outline-style,
+		-moz-outline-width,-moz-user-focus,-moz-user-input,
+		-moz-user-modify,-moz-user-select,orphans,outline,
+		outline-color,outline-style,outline-width,overflow,
+		overflow-X,overflow-Y,padding,padding-bottom,padding-left,
+		padding-right,padding-top,page,page-break-after,
+		page-break-before,page-break-inside,pause,pause-after,
+		pause-before,pitch,pitch-range,play-during,position,quotes,
+		-replace,richness,right,ruby-align,ruby-overhang,
+		ruby-position,-set-link-source,size,speak,speak-header,
+		speak-numeral,speak-punctuation,speech-rate,stress,
+		scrollbar-arrow-color,scrollbar-base-color,
+		scrollbar-dark-shadow-color,scrollbar-face-color,
+		scrollbar-highlight-color,scrollbar-shadow-color,
+		scrollbar-3d-light-color,scrollbar-track-color,table-layout,
+		text-align,text-align-last,text-decoration,text-indent,
+		text-justify,text-overflow,text-shadow,text-transform,
+		text-autospace,text-kashida-space,text-underline-position,top,
+		unicode-bidi,-use-link-source,vertical-align,visibility,
+		voice-family,volume,white-space,widows,width,word-break,
+		word-spacing,word-wrap,writing-mode,z-index,zoom},
+	sensitive,
+	morecomment=**[s]{/*}{*/},
+	escapechar=`
+}
+\lstdefinelanguage[CSS]{CSS3}[]{CSS3}{
+	moredelim=**[s][\color{editorOcher}\ttfamily]{:}{;}
+}
+
+\lstdefinelanguage[SASS]{CSS3}[]{CSS3}{
+	moredelim=**[l][\color{editorOcher}\ttfamily]{:},
+	moredelim=**[s][\color{black}\bfseries]{@}{\%},
+	moredelim=**[l][\color{editorGreen}\bfseries]{\%}
+}
+
+\lstdefinelanguage[LESS]{CSS3}[CSS]{CSS3}{
+	morecomment=**[l]{//},
+}
+
+% JavaScript
+\lstdefinelanguage{JavaScript}{
+	alsoother={.....},
+	morekeywords={async, await, break, case, catch, class, continue, const, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, let, new, return, switch, this, throw, try, typeof, var, void, while, with},
+	morekeywords={[2]{NaN, undefined, Infinity, true, false, null}},
+	morekeywords={[3]{Object,Array, Function, String, Number, Boolean, Promise, jQuery, \$, Math, window, document, JSON, console, prototype, AsyncFunction, RegExp}},
+	morekeywords={[4]{log, get, ajax, html, val, post, on, toString, split, splice, concat, substring, search, valueOf, replace, substr, toLowerCase, toUpperCase, isNaN, isFinite, isInteger, getElementById, getElementsByName, open}},
+	morekeywords={[5]{alert, confirm, prompt, open, eval}},
+	morecomment=[s]{/*}{*/},
+	morecomment=[l]//,
+	morestring=[b]",
+	morestring=[b]',
+	escapechar = `,
+	literate=%
+	*{0}{{{\color{red}0}}}1
+	{1}{{{\color{red}1}}}1
+	{2}{{{\color{red}2}}}1
+	{3}{{{\color{red}3}}}1
+	{4}{{{\color{red}4}}}1
+	{5}{{{\color{red}5}}}1
+	{6}{{{\color{red}6}}}1
+	{7}{{{\color{red}7}}}1
+	{8}{{{\color{red}8}}}1
+	{9}{{{\color{red}9}}}1,
+}
+\lstdefinelanguage{HTML5}{
+	language=html,
+	sensitive=true,	
+	alsoletter={<>=-/},	
+	morecomment=[s]{<!-}{-->},
+	morecomment=[l]{<!DOCTYPE},
+	escapechar = `,
+	%moredelim = [is]{||}{||},
+	tag=[s],
+	%\tg{html},
+	otherkeywords={
+		% General
+		=>,>
+		% Standard tags
+		<!DOCTYPE html>,
+		<html, </html, <html>, </html>,
+		<head, <title, </title, <style, </style, <link, </head, <meta, />,
+		% body
+		</body, <body,
+		% Divs
+		</div, <div, </div>, 
+		% Paragraphs
+		</p, <p, </p>,
+		% scripts
+		</script, <script,
+		% More tags...
+		<canvas, /canvas>, <svg, <rect, <animateTransform, </rect>, </svg>, <video, <source, <iframe, </iframe>, </video>, <image, </image>, <header, </header, <article, </article
+	},
+	morekeywords={>},
+	morekeywords=[6]{
+		<!DOCTYPE html>
+	},
+	ndkeywords={
+		% General
+		% HTML attributes
+		charset=, src=, id=, width=, height=, style=, type=, rel=, href=,
+		% SVG attributes
+		fill=, attributeName=, begin=, dur=, from=, to=, poster=, controls=, x=, y=, repeatCount=, xlink:href=,
+		% properties
+		margin:, padding:, background-image:, border:, top:, left:, position:, width:, height:, margin-top:, margin-bottom:, font-size:, line-height:,
+		% CSS3 properties
+		transform:, -moz-transform:, -webkit-transform:,
+		animation:, -webkit-animation:,
+		transition:,  transition-duration:, transition-property:, transition-timing-function:,
+	}
+}
+\lstdefinelanguage{MySQL}{
+	language = SQL,
+	morestring = [b]`
+}
+\lstdefinestyle{htmlcssjs} {%
+	% General design
+	%  backgroundcolor=\color{editorGray},
+	basicstyle={\ttfamily},   
+	frame=tb,
+	% line-numbers
+	xleftmargin={0.75cm},
+	numbers=left,
+	stepnumber=1,
+	firstnumber=1,
+	numberfirstline=true,	
+	% Code design
+	identifierstyle=\color{black},
+	keywordstyle=\color{blue}\bfseries,
+	ndkeywordstyle=\color{editorGreen}\bfseries,
+	keywordstyle={[3]{\color{editorPurple}\bfseries}},
+	keywordstyle={[4]{\color{black}\bfseries}},
+	keywordstyle={[5]{\color{black}\bfseries}},
+	keywordstyle={[6]{\color{brown}\bfseries}},
+	keywordstyle={[7]{\color{red}\bfseries}},
+	stringstyle=\color{editorOcher}\ttfamily,
+	commentstyle=\color{brown}\ttfamily,
+	% Code
+	%alsodigit={.:;},	
+	tabsize=2,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	extendedchars=true,
+	breaklines=true,
+	captionpos=b,
+	literate=%
+	*{0}{{{\color{red}0}}}1
+	{1}{{{\color{red}1}}}1
+	{2}{{{\color{red}2}}}1
+	{3}{{{\color{red}3}}}1
+	{4}{{{\color{red}4}}}1
+	{5}{{{\color{red}5}}}1
+	{6}{{{\color{red}6}}}1
+	{7}{{{\color{red}7}}}1
+	{8}{{{\color{red}8}}}1
+	{9}{{{\color{red}9}}}1,
+}
+\lstdefinestyle{htmlcssjsbw} {%
+	% General design
+	%  backgroundcolor=\color{editorGray},
+	basicstyle={\ttfamily},   
+	frame=tb,
+	% line-numbers
+	xleftmargin={0.75cm},
+	numbers=left,
+	stepnumber=1,
+	firstnumber=1,
+	numberfirstline=true,	
+	% Code design
+	identifierstyle=\ttfamily,
+	keywordstyle=\bfseries,
+	commentstyle=\color{gray}\ttfamily,
+	% Code
+	%alsodigit={.:;},	
+	tabsize=2,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	extendedchars=true,
+	breaklines=true,
+	captionpos=b,
+}
+%
+\lstdefinestyle{py} {%
+	language=python,
+	literate=%
+	*{0}{{{\color{lightred}0}}}1
+	{1}{{{\color{lightred}1}}}1
+	{2}{{{\color{lightred}2}}}1
+	{3}{{{\color{lightred}3}}}1
+	{4}{{{\color{lightred}4}}}1
+	{5}{{{\color{lightred}5}}}1
+	{6}{{{\color{lightred}6}}}1
+	{7}{{{\color{lightred}7}}}1
+	{8}{{{\color{lightred}8}}}1
+	{9}{{{\color{lightred}9}}}1,
+	basicstyle=\footnotesize\ttfamily, % Standardschrift
+	numbers=left,               % Ort der Zeilennummern
+	%numberstyle=\tiny,          % Stil der Zeilennummern
+	%stepnumber=2,               % Abstand zwischen den Zeilennummern
+	numbersep=5pt,              % Abstand der Nummern zum Text
+	tabsize=4,                  % Groesse von Tabs
+	extendedchars=true,         %
+	breaklines=true,            % Zeilen werden Umgebrochen
+	keywordstyle=\color{blue}\bfseries,
+	frame=b,
+	commentstyle=\color{brown}\itshape,
+	stringstyle=\color{editorOcher}\ttfamily, % Farbe der String
+	showspaces=false,           % Leerzeichen anzeigen ?
+	showtabs=false,             % Tabs anzeigen ?
+	xleftmargin=17pt,
+	framexleftmargin=17pt,
+	framexrightmargin=5pt,
+	framexbottommargin=4pt,
+	%backgroundcolor=\color{lightgray},
+	showstringspaces=false,      % Leerzeichen in Strings anzeigen ?
+}%
+%
+\lstdefinelanguage{C++11}{
+	language=C++,
+	sensitive=true,	
+	alsoletter={\_},
+	moredelim =*[is][\color{gray}] {`}{`},
+	morecomment = [s]{[[deprecated}{]]},
+	%\tg{html},
+	morekeywords = [1]{uint, \_t, \#include, \#if, \#pragma, \#define},
+	morekeywords = [3]{NULL},
+	morekeywords=[2]{
+		bitset,set,list,vector,pair,tuple,queue,stack,priority\_queue,unordered\_set,std,any
+	},
+	otherkeywords = {\&\&,||,<<,>>,->,!,!=,==,:,0x,0LL,1LL,2LL,3LL,4LL,5LL,6LL,7LL,8LL,9LL},
+	morekeywords=[7]{0x,0B,0b,INT\_MAX,
+		0LL,1LL,2LL,3LL,4LL,5LL,6LL,7LL,8LL,9LL,
+		0.,1.,2.,3.,4.,5.,6.,7.,8.,9.,
+		0L,1L,2L,3L,4L,5L,6L,7L,8L,9L
+	}%,
+	%morecomment=*[s]{-<}>
+}
+%\newcommand{\JS}[2]{}
+\renewcommand\lstlistingname{Codeblock}
+\newcommand{\JSinline}[1]{\lstinline[language = JavaScript, style=htmlcssjs, keepspaces=true ] {#1}}
+\newcommand{\inline}[2][black]{{\color{#1}\ttfamily{#2}}}
+\newcommand{\Cinline}[1]{\lstinline[style=htmlcssjsbw, language = C++11, keepspaces=true] {#1}}
+\newcommand{\htmlinline}[1]{\lstinline[style=htmlcssjs, language = JavaScript, alsolanguage = HTML5] {#1}}
+\newcommand{\cmt}[1]{\color{brown}\ttfamily {#1} }
+\lstnewenvironment{JS}[1][]
+{\lstset{language = JavaScript, style=htmlcssjs, caption = {#1}}
+}
+{}
+\lstnewenvironment{HTML}[1][]
+{\lstset{language=HTML5, alsolanguage=JavaScript, style=htmlcssjs, caption = {#1}}
+}
+{}
+
+\lstnewenvironment{CSS}[2][CSS]
+{\lstset{style=htmlcssjs, caption = {#2}, language = [#1]CSS3 }
+}
+{}
+
+\lstnewenvironment{C++}[1][]
+{\lstset{style=htmlcssjs, caption = {#1}, language = C++11 }
+}
+{}
+
+
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\begin{document}
+	%\maketitle %製作tilte page
+	%\thispagestyle{empty}  %去除頁碼
+	%\thispagestyle{fancy}  %使用fancyhdr
+	%\tableofcontents %目錄
+	%%%%%%%%%%%%%%%%%%%include file here%%%%%%%%%%%%%%%%%%%%%%%%%
+	%mainfile: template.tex
+	
+	\pagestyle{fancy}  % fancy: fancyhdr
+	
+	%use with fancygdr
+	\lhead{\leftmark}
+	\chead{}
+	\rhead{W2 手寫功課}
+	\lfoot{劉至軒}
+	\cfoot{}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+	\include{content}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%\begin{thebibliography}{99}
+	%\bibitem[1]{ex}\verb|http://www.example.com/|
+	%\end{thebibliography}
+\end{document}

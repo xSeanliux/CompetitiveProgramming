@@ -8,6 +8,7 @@ string solutionPath[10005];
 int minLen;
 void dfs(int A, int B, int N, int iteration){
     //cout << A << ", " << B <<endl;
+    /*
     if(visited[A][B] == true){
         return;
     } else {
@@ -55,7 +56,7 @@ void dfs(int A, int B, int N, int iteration){
         dfs(maxa, A + B - maxa, N, iteration+1);
     }
     visited[A][B] = false;
-
+    */
     /*
     // Actual Code to be used in submit - the above is debug code
     path[iteration] = "fill A";

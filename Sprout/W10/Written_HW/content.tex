@@ -1,0 +1,55 @@
+
+%mainfile: template.tex
+%%%%%%%%%%%%%%%Title的資訊%%%%%%%%%%%%%%%
+\title{W10 手寫功課} %標題
+\author{劉至軒} %作者
+\date{\today} %日期
+
+\thispagestyle{fancy}
+\setlength\parindent{24pt}
+\setcounter{section}{-1}
+	\maketitle
+\rhead{W10 手寫功課}
+\lfoot{劉至軒}
+
+\pr{
+	~\\
+	\begin{enumerate}
+		\item $(a, b, c) = (0, 1, 0)$或$(a, b, c) = (1, 0, 1)$
+		\item $(a, b, c, d) = (0, 0, 0, 0)$
+	\end{enumerate}
+}
+
+\pr{
+	~\\
+	\begin{enumerate}
+		\item 
+		\begin{align*}
+			f &= (c_1 \land c_2 \land \dots \land c_k)\\
+			&= (c_1 \land c_2) \land \left[ (c_3 \land c_4 \land \dots \land c_k) \right]\\
+			\implies \lnot f &=  \lnot  (c_1 \land c_2) \lor \lnot (c_3 \land c_4 \land \dots \land c_k)  \\
+			&= \lnot c_1 \lor \lnot c_2 \lor \lnot \left[(c_3 \land c_4) \land c_5 \dots \land c_k \right]\\
+			&= \lnot c_1 \lor \lnot c_2 \lor \lnot c_3 \lor \lnot c_4 \lor \left[(c_5 \land c_6) \land \dots \land c_k \right]\\
+			\vdots\\
+			&= \lnot c_1 \lor \lnot c_2 \lor \dots \lor \lnot c_k\\
+		\end{align*}
+		\item
+		因為$f$為一個CNF算式，所以型如
+		$$f  = c_1 \land c_2 \land \dots \land c_k$$
+		則若想要$f$為\inline{F}，則至少一個$c_i$為\inline{F}，又因為$c_i$中沒有重複變數，所以就一定可以選擇變數，使得$f$是\inline{F}了，這樣子為$O(k)$，$k$為變數數量。
+		\item 因為$f$為DNF算式，所以型如
+		$$f  = c_1 \lor c_2 \lor \dots \lor c_k$$
+		只需要選擇其中一個$c_i$，使得其中的變數經過運算回傳\inline{T}即可，且因為沒有重複的變數所以一定辦得到，複雜$O(k)$，$k$為變數數量。
+		\item 同上，$f$為一個DNF算式代表$\lnot f$是一個CNF算式。而判斷$f$是否可以為\inline{F}等同於判斷$\lnot f$是否可以為\inline{T}，成為了一個$CNF-SAT$問題。然而，根據Cook-Levin Theorem，$CNF-SAT \in NPC$，又$P \not = NP$，所以其不存在一個多項式演算法。
+		\item 直接用構造反證法：
+		考慮一個布林算式
+		$X = (a_1 \land b_1) \lor (a_2 \land b_2 ) \lor \dots \lor (a_k \land b_k)$
+		則這代表「存在某個數字$k$使得$a_k$、$b_k$皆為\inline{T}」，也就代表：「當我每一個數字都選擇$a_i$或$b_i$的時候，不論怎麼選都一定會有一個\inline{T}」，所以CNF樣式為
+		$(a_1 \lor a_2 \lor \dots a_k) \land (b_1 \lor a_2 \lor \dots a_k) \land \dots \land (b_1 \lor b_2 \lor \dots b_k) $，長度從原本的$2n$變成$2^n$了， 光輸出就不是多項式了，所以不存在一個多項式時間演算法，因為下界就已經超過了！
+	\end{enumerate}
+}
+\pr{
+	令要判斷的第一個為$A$和$B$。若兩者相等，則$A \oplus B$（此處$\oplus$表示位元XOR）恆為\inline{F}。也就是，想要找到一組變數使得$A \oplus B$為\inline{T}即可。又
+	$$X = A \oplus B = (\lnot A \land B) \lor (A \land \lnot B)$$
+	，若$X$存在一組變數使得回傳\inline{T}，則$A$，$B$不等價。已知這個運算式存在一個等價的CNF算式$P$，則問題即化簡為：$P$是否可以回傳\inline{T}？也就是$CNF-SAT$問題，故此問題為$NP-hard$。
+}	

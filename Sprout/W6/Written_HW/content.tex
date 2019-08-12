@@ -1,0 +1,53 @@
+%mainfile: template.tex
+%%%%%%%%%%%%%%%Title的資訊%%%%%%%%%%%%%%%
+\title{W6 手寫功課} %標題
+\author{劉至軒} %作者
+\date{\today} %日期
+
+\thispagestyle{fancy}
+\setlength\parindent{24pt}
+\setcounter{section}{-1}
+	\maketitle
+\rhead{W6 手寫功課}
+\lfoot{劉至軒}
+
+\pr{
+	~\\
+	\begin{enumerate}
+		\item 一個東西插入會是$O(1)$，如果不考慮長度變長的話就是$O(N)$；現在來考慮長度變長的case：會是
+		$$\sum^{\lfloor \log N \rfloor}_{k = 0} 2^k = 2^{\lfloor \log N \rfloor + 1} - 1 \approx 2N - 1 = O(N) $$，加起來時間複雜度是$O(N)$。而空間複雜度：$$2^{\ceil{\log N}} \leq 2N = O(N)$$
+		\item 顯然的，空間複雜度是$O(N)$，因為\inline{capacity}每次只會加一，所以會是$\min(C_0, N)$，$C_0$是初始的\inline{capacity}。至於時間複雜度，最差的case就是一開始的\inline{capacity}是零，所以每次加都要重新copy一次，複雜度
+		$$\sum^n_{k = 0} k = \frac{n(n-1)}{2} = O(n^2)$$
+	\end{enumerate}
+}
+\pr{
+	~\\
+	\begin{enumerate}
+		\item 在每一個\inline{Node}裡面增加一個變數\inline{time}，代表進來的時間戳，一開始全部都是\inline{0}，一開始時間為\inline{1}，每次去\inline{next}就判斷其\inline{time}是否為\inline{0}，如果是的話就設定為\inline{++currentTime}，否則回傳換的大小為\inline{currentTime - next->time}。這樣，$n$個\inline{Node}都增加了一個變數，所以空間複雜度為$O(n)$。
+		\item 可以知道，假設環和起點的距離為$r$，環長度為$\lambda$，則對於$t \geq r$，和所有的$x \in \mathbb{N}$，有
+		$$x_t = x_{t + \lambda x}$$，也就是
+		$$a \equiv b \pmod{\lambda} \implies x_a = x_b$$
+		最差情況就是我跳了$\lambda$步，則顯然$\lambda \equiv 2\lambda \pmod{\lambda}$，而因為$2\lambda - \lambda = \lambda$，所以就直接輸出答案即可。在這之前，都不會有$0 < k < \lambda$使得$x_{k} = x_{2k}$，因為如果$k \equiv 2k \pmod{\lambda} \implies \lambda | (2k - k) = k$，但是$k < \lambda \implies k = 0$，然而$k > 0$，所以不會有。如果$\lambda \leq k$，則就最多跑$k$次，如果有遇到$x_i = x_{2i}$的話，那環的大小就是$i$；否則就輸出沒有環。這樣複雜度就是$O(k)$了。
+		\item 令環長為$\lambda = O(N)$，則會經過$\ceil{\log \lambda}$次的尋找才會找到。所以時間複雜度
+		$$\sum^{\ceil{\log \lambda}}_{k = 0} 2^k = 2^{\ceil{\log \lambda}+ 1} - 1 = O(\lambda) = O(N)$$
+	\end{enumerate}
+}
+\pr{
+	~\\
+	\begin{enumerate}
+		\item 最爛的case就是每次$a_i$都要跳到$a_{i + 1}$，所以要慢慢跳，跳$O(N)$格，而如果每一個詢問都這樣整人的話，複雜度就是$O(NQ)$了。
+		\item 可以表示為$a[a[i]]$。
+		\item 應該要填$b[b[i][j-1]][j-1]$。
+		\item 令$q = \ceil{\log k}$，那以下的程式會回傳一開始在$x$，跳了$k$步之後的編號：
+		\begin{C++}
+for(int i = 0; i <= q; i++){
+	if((long long)1 << i & k){
+		x = b[x][i];	
+	}
+}
+return x;
+		\end{C++}
+		所以複雜度是$O(\log k)$。
+		\item 因為已經假設好$b$陣列已經建立完畢（如果沒有的話可以$O(N \log N)$建立），對於每一個詢問都可以$O(\log k) = O(\log N)$詢問，所以複雜度$O(Q \log N)$。
+	\end{enumerate}
+}

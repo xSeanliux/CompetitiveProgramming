@@ -152,7 +152,6 @@ int main()
                 printf("%.0f %.0f\n", i+1, cHull[i].x + orX, cHull[i].y + orY);
             }
             //printf("%.0f %.0f", cHull[0].x + orX, cHull[0].y + orY);
-
             cin >> k;
         }
     }

@@ -1,0 +1,86 @@
+%mainfile: template.tex
+%%%%%%%%%%%%%%%Title的資訊%%%%%%%%%%%%%%%
+\title{W2 手寫功課} %標題
+\author{劉至軒} %作者
+\date{\today} %日期
+
+\thispagestyle{fancy}
+\setlength\parindent{24pt}
+\setcounter{section}{-1}
+	\maketitle
+\rhead{W2 手寫功課}
+\lfoot{劉至軒}
+\pr{
+	~\\
+\begin{enumerate}
+	\item  
+	$$\lim_{n \rightarrow \infty} \frac{3n + 1}{n - 1} = \lim_{n \rightarrow \infty} \frac{3 + \frac{1}{n}}{1 - \frac{1}{n}} = 3$$ 
+	\item 
+	$$\lim_{n \rightarrow \infty} \frac{n}{n^2 + 1} = \lim_{n \rightarrow \infty} \frac{1}{n + \frac{1}{n}} = 0$$
+	\item 
+	$$f(n) \in O(2^n) \implies \exists \varepsilon, x_0, \forall n > x_0, | f(n) | \leq \varepsilon \cdot 2^{n} = \frac{\varepsilon}{2} \cdot 2^{n+1}$$，所以只要選$\varepsilon' = \varepsilon$即可以符合定義。
+	
+	反方向：
+	$$f(n) \in O(2^{n + 1}) \implies \exists \varepsilon, x_0, \forall n > x_0 | f(n) | \leq \varepsilon \cdot 2^{n + 1} = 2\varepsilon \cdot 2^{n}$$，則選擇$\varepsilon' = 2\varepsilon$則符合定義。
+	\item 
+	$$f(n) \in O(n!) \implies \exists \varepsilon, x_0, \forall n > x_0, | f(n) | \leq \varepsilon \cdot (n!)  < \varepsilon \cdot (n + 1)!$$
+	故命題成立。
+	
+	反方向：
+	$f(n) = (n + 1)!$就是一個反例子：假設
+	$$\exists \varepsilon, x_0, \forall n > x_0, |f(n)| \leq \varepsilon \cdot (n)!$$
+	再考慮$f(\ceil{\varepsilon})$：
+	\begin{align*}
+		f(\ceil{\varepsilon}) &= (\ceil{\varepsilon} + 1)!\\
+		&= (\ceil{\varepsilon} + 1) \cdot (\ceil{\varepsilon} \rfloor)!\\
+		&> \varepsilon \cdot (\varepsilon)!
+	\end{align*}
+	矛盾。所以此不成立，只有一方面。
+	\item 這一題也是舉範例：對於$k > 1$，$f(x) = kx$皆不成立：顯然$f(x) = kx \in O(n)$，只需要取$\varepsilon > k$即可。假設$2^{f(n)} \in O(2^n)$，則
+	$$\exists \varepsilon, x_0, \forall n > x_0, | 2^{f(n)} | < \varepsilon \cdot 2^{n}$$
+	\begin{align*}
+		| 2^{f(n)} | < \varepsilon \cdot 2^{n} \implies 2^{kx} &< \varepsilon \cdot 2^{x}\\
+		(2^k)^x&=2^{x + \log_2 \varepsilon}
+	\end{align*}
+	所以對於任何的$\varepsilon$，當$x > \frac{\log_2 \varepsilon}{k - 1}$則以上不等式不成立，有矛盾，故命題不成立。
+\end{enumerate}
+}
+
+\pr{
+	先計算$m = 1$的case：
+	$$f(2^1) = 2f(1) + 4 = 6 \leq 6\log_26$$
+	假設$m = k$不等式成立，則考慮$m = k + 1$：
+
+	\begin{align*}
+		f(2^{k + 1}) &= 2f(2^k) + 2^{k + 2}\\
+		&\leq 2 \cdot 3 \cdot 2^{k} \cdot k + 2^{k + 2}\\
+		&\leq (3k + 2) \cdot 2^{k + 1}\\
+		&< (3k + 3) \cdot 2^{k + 1}\\
+		&= 3 \cdot 2^{k + 1} \cdot \log_2(2^{k + 1})
+	\end{align*}
+	得證。
+}
+
+\pr{
+	先驗證$n = 1$的case:
+	$$f(1) = 1 \leq 2 \cdot 1^2 - 1 = 1$$
+	成立。則假設對於所有$x \leq k$，命題皆成立。現在考慮$n = k + 1$（並且$k = 2l$，$l$為正整數）：
+	\begin{align*}
+		f(k + 1) &= f(\lfloor \frac{k + 1}{2} \rfloor) + f(\ceil{\frac{k + 1}{2}}) + (k + 1)^2\\
+			&\leq 2 (\lfloor \frac{k + 1}{2} \rfloor)^2 + 2(\ceil{\frac{k + 1}{2}})^2 + k^2 + 2k + 1\\
+			&= 2l^2 + 2(l + 1)^2 + 4l^2 + 4l - 1\\
+			&= 8l^2 + 8l + 1\\
+			&= 2k^2 + 4k + 1\\
+			&= 2(k + 1)^2 - 1
+	\end{align*}
+	然後再考慮$k = 2l + 1$，$l \in \mathbb{N}$的case：
+	\begin{align*}
+		f(k + 1) &= f(\lfloor \frac{k + 1}{2} \rfloor) + f(\ceil{\frac{k + 1}{2}}) + (k + 1)^2\\
+		&\leq 2(l + 1)^2 + 2(l + 1)^2 + (2l + 2)^2 - 2\\
+		&=8(l + 1)^2 - 2\\
+		&= 8l^2 + 16l + 6\\
+		&< 2(2l + 2)^2 - 1 = 16l^2 + 16l + 7
+	\end{align*}
+	得證。
+	\it{36^{\text{ th}}}
+}

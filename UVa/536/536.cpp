@@ -3,39 +3,28 @@
 using namespace std;
 
 
-string pre, in;
-int c = 0;
+string pre, ino;
 
-//post: left, right, root;
-
-void run(string pre, string in){
-    if(pre.length() == 0 || in.length() == 0) return;
-    char root = pre[0];
-    int i, j, l = pre.length();
-    if(l <= 1){
-        cout << root;
+void printTree(int prel, int prer, int inol, int inor){
+    //printf("Running pT(%d, %d, %d, %d)\n", prel, prer, inol, inor);
+    if(prer <= prel || inor <= inol) return;
+    if(prer - prel <= 1){
+        cout << pre[prel];
         return;
-    }
-    for(i = 0; i < l; i++){
-        if(in[i] == root) break;
-    }
-    string inl = in.substr(0, i);
-    string inr = in.substr(i + 1);
-    //cout << inl << " " << inr << endl;
-    string prel = pre.substr(1, inl.length());
-    string prer = pre.substr(inl.length() + 1);
-    //cout << prel << " " << prer << endl;
-    if(l > 1){
-        run(prel, inl);
-        run(prer, inr);
-    }
-    cout << root;
+    };
+    char r = pre[prel];
+    int midAt;
+    for(midAt = inol; midAt < inor; midAt++) if(ino[midAt] == r) break;
+    //there are midAt - inol in left subtree
+    //printf("MIDAT: %d\n", midAt);
+    printTree(prel + 1, prel + 1 + midAt - inol, inol, midAt);
+    printTree(prel + 1 + midAt - inol, prer, midAt + 1, inor);
+    cout << r;
 }
 
 int main(){
-    while(cin >> pre >> in){
-        if(!c) c++;
-        else cout << endl;
-        run(pre, in);
+    while(cin >> pre >> ino){
+        printTree(0, pre.length(), 0, ino.length());
+        cout << endl;
     }
 }

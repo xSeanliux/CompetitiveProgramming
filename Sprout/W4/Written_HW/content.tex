@@ -1,0 +1,111 @@
+%mainfile: template.tex
+%%%%%%%%%%%%%%%Title的資訊%%%%%%%%%%%%%%%
+\title{W4 手寫功課} %標題
+\author{劉至軒} %作者
+\date{\today} %日期
+
+\thispagestyle{fancy}
+\setlength\parindent{24pt}
+\setcounter{section}{-1}
+	\maketitle
+\rhead{W4 手寫功課}
+\lfoot{劉至軒}
+\pr{
+	~\\
+	\begin{enumerate}
+		\item 總共匹配15次，以下為過程：
+		\begin{C++}
+mississippi
+s
+mississippi
+ s
+mississippi
+  s
+mississippi
+  si
+mississippi
+   s
+mississippi
+   si
+mississippi
+   sip
+mississippi
+    s
+mississippi
+     s
+mississippi
+     si
+mississippi
+      s
+mississippi
+      si
+mississippi
+      sip
+mississippi
+       s
+mississippi
+        s
+		\end{C++}
+	\item 令字元為$c_1, c_2, c_3 \dots, c_{1000}$，則可以證明這個構造方法是對的：
+	\begin{align*}
+		A &= \underbrace{c_1c_2c_1c_2\dotsc c_2c_1c_2}_{10^6 - (10^3 - 2)\text{個}}c_3c_4c_5c_6\dots c_{1000}\\
+		B &= \underbrace{c_1c_2c_1c_2\dotsc c_2c_1c_2}_{10^6 - (10^3 - 2)\text{個}}c_{3}
+	\end{align*}
+	\end{enumerate}
+	易知$B$不在$A$內，且匹配數量$\sum^{10^6 - (10^3 - 2) + 1}_{k = 1} = 499003996506 > 10^9$個
+	\item 以上$A$沒有連續的字元，故可以直接用，所以構法同上。
+}
+
+\pr{
+	~\\
+	\begin{enumerate}
+	\item 過程：
+		\begin{C++}
+1 8 5 3 2 6 4 7 
+1 8 5 3 
+1 8 
+1 8 
+    5 3 
+    3 5 
+1 3 5 8 
+        2 6 4 7 
+        2 6 
+        2 6 
+            4 7 
+            4 7 
+        2 4 6 7 
+1 2 3 4 5 6 7 8 
+		\end{C++}
+	\item 過程：
+	\begin{C++}
+1, 8, 5, 3, 2, 6, 4, 7
+1, 3, 2, 4, 8, 5, 6, 7 (4)
+1, 2, 3, 4, 8, 5, 6, 7 (3)
+1, 2, 3, 4, 5, 6, 8, 7 (6)
+1, 2, 3, 4, 5, 6, 7, 8 (7)
+	\end{C++}
+	\item  過程：
+	\begin{C++}
+26 15 27 35 17 36 28 16
+15 35 26 36 16 27 17 28 
+15 16 17 26 27 28 35 36 
+	\end{C++}
+\end{enumerate}
+}
+
+\pr{
+	~\\
+	\begin{enumerate}
+		\item 
+		\begin{enumerate}
+			\item \inline{merge\_sort}：是stable，因為在合併的時候，兩個值會優先選擇左邊的，可以確保在左邊的值一定會在右邊。
+			
+			\item  \inline{quick\_sort}：不是stable，因為pivot是隨便選的，到最後他一定在所有同值的最左邊，而其原本不一定就在最左邊， 所以不是stable。
+		
+			\item
+			 \inline{radix\_sort}：是stable，因為如果值遇到同一個，那在左邊的會先被放進去\inline{vector}
+			內，會先被放進去\inline{array}裏頭。
+		\end{enumerate}
+		\item 不能改變排序函式，但是可以改變比較函式：定義一個新的\inline{struct}，裡面存了原本的Data和位置，如果遇到Data相同再比較位置即可。若不能定義新的比較函式，那就超載\inline{<}運算子就好了。
+	\end{enumerate}
+}

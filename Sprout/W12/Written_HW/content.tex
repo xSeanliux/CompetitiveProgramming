@@ -1,0 +1,70 @@
+
+%mainfile: template.tex
+%%%%%%%%%%%%%%%Title的資訊%%%%%%%%%%%%%%%
+\title{W12 手寫功課} %標題
+\author{劉至軒} %作者
+\date{\today} %日期
+
+\thispagestyle{fancy}
+\setlength\parindent{24pt}
+\setcounter{section}{-1}
+	\maketitle
+\rhead{W12 手寫功課}
+\lfoot{劉至軒}
+
+\pr{
+	\\~
+	\begin{enumerate}
+		\item 令四個花色（和Joker）分別為$1$，$10$，$100$⋯⋯$10000$。則對於一張卡$c$，我們定義$H(c) = $花色對應的值加上其數字（對於Joker，第一個是$1$，第二個是$2$）。
+		\item 
+		還是用程式比較清楚... \inline{n}為目前的根節點，而\inline{n->l}、\inline{n->r}為指向其左右子樹的指標。
+		\begin{C++}
+string getHash(Node n){
+	if(!n) return "0";
+	if(n->l && n->r){
+		return "4" + getHash(n->l) + getHash(n->r);
+	} else if(n->l){
+		return "3" + getHash(n->l);
+	else if(n->r){
+		return "2" + getHash(n->r);
+	} else {
+		return "1";
+	} 
+}
+		\end{C++}
+		則題目中的二元樹的雜湊值分別為：$0, 1, 31, 21, 411$。
+	\end{enumerate}
+}
+\pr{
+	\\~
+	\begin{enumerate}
+		\item 對於每一個字串，都必須要有不同的雜湊值，也就是需要數有幾個相異字串。答案：
+		$$\sum_{i = 1}^{6} 26^i$$個不同的值。
+		\item 沒辦法，因為可能還需要不知道的資訊，譬如一個Key等，例子：Viginere Cipher中的Key是解碼的必要條件，如果沒有的話只能慢慢猜，非常難回推其他的密文。
+		\item 攻擊者可以透過類似Tampermonkey等具有類似功能的工具Intercept到被攻擊者的電腦傳輸到伺服器的雜湊過後的函數，而因為此雜湊不具有$One-wayness$，Intercept之後就可以容易復原原本的密碼／認證機構，而獲得權限。
+		\item 令第$i$個輸入為$a_i = i \cdot  1000000007$，則全部都會跑進去餘數為零的Bucket裡面，到最後查詢會變成$O(N)$。
+	\end{enumerate}
+}
+\pr{
+	\\~
+	\begin{enumerate}
+		\item 程式如下：
+		\begin{C++}
+int M, C;	//given values
+int hash(string s){
+	int currentPow = 1, res = 0;
+	reverse(s.length(), s.end());
+	for(char c : s){
+		res = (res + (c - 'a') * currentPow) % M;
+		currentPow = C * currentPow % M;
+	}
+	return res;
+}
+		\end{C++}
+		此程式對於每一個字元都跑$O(1)$的運算，所以時間$O(1) \times n = O(n)$。
+		\item $s_1 = a$、$s_2 = aa$、$s_3 = aaa$，此處$H(s_1) = H(s_2) = H(s_3) = 0$。
+		\item 答案：$$y = C \times (x - s_l \cdot C^{k - 1}) + s_{r + 1} \pmod{M}$$
+		\item 先計算$s$的雜湊值$H(s)$，花費時間$O(n)$，然後再對於每一個長度為$n$的$t$的子字串，都可以轉移：先$O(n)$計算$H(t[1, n])$的值，然後轉移到下一個狀態（$H[2, n + 1]$），到$H(t[m - n + 1, m])$為$O(1)$，然後在這個步驟總共花了$O(m - n)$。總複雜度$O(n + (n + m - n)) = O(n + m)$。
+	\end{enumerate}
+	
+}

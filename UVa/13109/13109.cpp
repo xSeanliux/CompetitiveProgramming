@@ -1,26 +1,31 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 using namespace std;
 
-int c, nE, mW;
-
-int weights[1000000  +5];
-
+long long int T, M, W;
+vector<long long int> arr;
 int main(){
-    cin >> c;
-    for(int k = 0; k < c; k++){
-        if(k > 0) cout << endl;
-        cin >> nE >> mW;
-        for(int i = 0; i < nE; i++){
-            cin >> weights[i];
+    cin >> T;
+    while(T--){
+        cin >> M >> W;
+        arr.clear();
+        arr.resize(M);
+        for(int i = 0; i < M; i++){
+            cin >> arr[i];
         }
-        sort(weights, weights + nE);
-        long long int ans = 0, sum = 0;
-        while(sum <= mW && ans <= nE){
-            sum += weights[ans];
-            ans++;
+        sort(arr.begin(), arr.end());
+        long long int sum = 0;
+        for(int i = 0; i < M; i++){
+            sum += arr[i];
+            if(sum > W){
+                cout << i << endl;
+                break;
+            }
+            if(i == M - 1){
+                cout << M << endl;
+                break;
+            }
         }
-        ans--;
-        printf("%lld", ans);
     }
 }

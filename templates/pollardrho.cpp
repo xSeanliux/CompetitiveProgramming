@@ -9,13 +9,14 @@ ulli A = 1, oriN, N, T;
 ulli toCheck[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 37};
 map<ulli, int> ps;
 
-ulli f(ulli x){
-    return (x*x + A) % N;
-}
-
 ulli gcd(ulli a, ulli b){
     return (!b) ? a : gcd(b, a % b);
 }
+
+ulli f(ulli x){
+    return (x * x + 1) % N;
+}
+
 
 ulli modexp(ulli b, ulli e, ulli m){
     if(e == 1) return b % m;
@@ -108,24 +109,4 @@ int main(){
         }
         printf("\n");
     }
-    /*
-    scanf("%llu", &T);
-    while(T--){
-        scanf("%llu", &N);
-        ps.clear();
-        //cout << "isPrime(" << N << ") = " << isPrime(N) << endl;
-        factorize(N);
-        printf("%llu =", N);
-        for(auto i = ps.begin(); i != ps.end(); i++){
-            if(i != ps.begin()){
-                printf(" *");
-            }
-            printf(" %llu", i->first);
-            if(i->second > 1){
-                printf("^%d", i->second);
-            }
-        }
-        printf("\n");
-    }
-    */
 }

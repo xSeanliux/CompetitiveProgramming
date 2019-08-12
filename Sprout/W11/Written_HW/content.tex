@@ -1,0 +1,70 @@
+
+%mainfile: template.tex
+%%%%%%%%%%%%%%%Title的資訊%%%%%%%%%%%%%%%
+\title{W11 手寫功課} %標題
+\author{劉至軒} %作者
+\date{\today} %日期
+
+\thispagestyle{fancy}
+\setlength\parindent{24pt}
+\setcounter{section}{-1}
+	\maketitle
+\rhead{W11 手寫功課}
+\lfoot{劉至軒}
+
+\pr{
+	令$\text{lowbit}(x) = 2^k$。則$x$為
+	$$x =\underbrace{1...}_{\text{第}k\text{位以上的位數}}1\underbrace{000\dots0}_{k - 1\text{個}0}$$
+	則$x$的bit-inverse可以表示為
+	$$x‘ =\underbrace{1...}_{\text{第}k\text{位以上的位數皆反轉}}0\underbrace{111\dots1}_{k - 1\text{個}1}$$
+	則當$x'$被加一的時候，$x'$的前$k - 1$位會不斷進位，到第$k$位會停止，因為其一定為$0$。此不影響第$k$位以上的位數，所以都和$x$相反。則當取$x \& x'$時，前$k - 1$位數一者為$0$、一者為$1$，所以都是$0$；第$k$位以上皆被反轉，所以也是$0$，惟第$k$位皆$1$，故$x \& x' = \text{lowbit}(x)$。
+}
+\pr{
+	\\~
+	\begin{enumerate}
+		\item 
+		\begin{align*}
+			S &= \sum_{i = 0}^{n} i \cdot 2^{i - 1}\\
+			2S &= \sum_{i = 0}^{n} i \cdot 2^{i}\\
+			&= \sum_{i = 1}^{n + 1} (i - 1) \cdot 2^{i - 1} = \sum_{i = 1}^{n} (i - 1) \cdot 2^{i - 1} + n \cdot 2^n\\
+			\implies (S - 2S) &=  \sum_{i = 1}^{n} 2^{i - 1} - n \cdot 2^n\\
+			&= 2^{n} - 1 - n \cdot 2^n\\
+			-S &= -1 - (n - 1) \cdot 2^n\\
+			S &= 2^n \cdot (n - 1) + 1\qed
+		\end{align*}
+		\item 我們會用強歸納法：先驗證Base Case（$f(0)$）會對：
+		$$f(0) = 1 \geq 0 = 0 \cdot 2^{-1}$$
+		現在，假設對於所有的$n' < n$來說，都滿足
+		$$f(n') \geq n' \cdot 2^{n' - 1}$$
+		則
+		\begin{align*}
+			\sum^{n - 1}_{i = 0} f(i) &\geq \sum^{n - 1}_{i = 0} i \cdot 2^{i - 1} = (n - 2) \cdot 2^{n - 1} + 1
+		\end{align*}
+		現在計算$f(n)$：
+		\begin{align*}
+			f(n) &= 2^n + \sum^{n - 1}_{i = 0} f(i)\\
+			&\geq 2^n +  (n - 2) \cdot 2^{n - 1} + 1\\
+			&= 2^n + n \cdot 2^{n - 1} - 2^n + 1\\
+			&=  n \cdot 2^{n - 1} + 1\\
+			&> n \cdot 2^{n - 1} \qed
+		\end{align*}
+	\end{enumerate}
+}
+\pr{
+	\\~
+	\begin{enumerate}
+		\item query(1, 15)
+		\item $O(\log^2 n)$，因為當詢問query(1, $2^k - 1$)的時候，會花$O(k)$的時間變成query(1, $2^{k - 1} - 1$)，所以會變成$T(n) = k + (k - 1) + (k - 2) + \dots + 1 = O(k^2) = O(\log^2 n)$。
+	\end{enumerate}
+}
+\pr{
+	\\~
+	\begin{enumerate}
+		\item 透過定義，可以知道 \inline{arr}$[x] = \sum$ \inline{dif}$[x]$（為差分序列）。則query(\inline{dif}, $x$)就好了。
+		\item 透過定義，可以知道若$[a, b]$都加了$k$，則\inline{dif}$[a]$會增加$k$，\inline{dif}$[b + 1]$會減少$k$。故呼叫update(\inline{dif}, $a$, $k$)、update(\inline{dif}, $b + 1$, $-k$)、update(\inline{dif}, $a$, $a \cdot k$)、update(\inline{dif}, $b + 1$, $-k \cdot (b + 1)$)即可。
+		\item $\sum^n_{i = 1}$ \inline{arr}$[i] = \sum^n_{i = 1} \sum^{i}_{j = 1}$\inline{dif}$[j] = \sum^{n}_{i = 1} (n + 1 - i)$ \inline{dif}$[i]$
+		\item 同上，
+		$\sum^{n}_{i = 1} (n + 1 - i)$ \inline{dif}$[i] = (n + 1) \sum^n_{i = 1}$\inline{dif}$[i] - \sum^n_{i = 1} i\times$ \inline{dif}$[i] $\\
+		 $= (n + 1) \sum^n_{i = 1}$\inline{dif}$[i] - \sum^n_{i = 1} $ \inline{dif2}$[i]$，故回傳$(n + 1) \times $ query(\inline{dif}, $n$) $-$ query(\inline{dif2}, $n$)即可。 
+	\end{enumerate}
+}

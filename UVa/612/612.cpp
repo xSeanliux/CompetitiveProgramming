@@ -1,67 +1,55 @@
 #include <iostream>
+#include <string.h>
+#include <algorithm>
 using namespace std;
 
-
-int cases, len, entries;
-struct DNA{
-    int len;
-    char gene[100];
-    int chaoticity;
-
+int T, x, n;
+string _s;
+bool f = false;
+char l[4] = {'A', 'C', 'G', 'T'};
+struct Obj{
+  string s;
+  int val, ind, freqs[4]; //0A1C2G3T
+  void getVal(){
+    this->val = 0;
+    for(int i = 0; i < 4; i++) freqs[i] = 0;
+    for(int i = 0; i < this->s.length(); i++){
+      for(int j = 3; j; j--){
+        if(s[i] < l[j]) this->val += this->freqs[j];
+        else {
+          this->freqs[j]++;
+          break;
+        }
+      }
+    }
+  }
+  Obj(){}
+  Obj(int ind, string s): ind(ind), s(s){
+    getVal();
+  }
 };
 
-DNA arr[100 + 5];
-
-void getChaoticity(DNA *d){
-    d->chaoticity = 0;
-    for(int i = 0; i < d->len-1; i++){
-        int t = 0;
-        for(int k = i+1; k < d->len; k++){
-            if(d->gene[k] >= d->gene[i]) break;
-            t = k - i;
-        }
-        //cout << t << endl;
-        d->chaoticity += t;
-    }
-}
-
-void sortDNA(int left, int right){
-    if(left >= right) return;
-    DNA pivot = arr[left];
-    int left_counter = left;
-    for(int i = left; i < right; i++){
-        if(arr[i].chaoticity <= pivot.chaoticity){
-            if(arr[i].chaoticity < pivot.chaoticity){
-                swap(arr[i], arr[left_counter]);
-            }left_counter++;
-        }
-    }
-    swap(arr[left], arr[left_counter-1]);
-    sortDNA(left, left_counter-2);
-    sortDNA(left_counter, right);
-
+bool cmp(const Obj a, const Obj b){
+    return (a.val == b.val ? a.ind < b.ind : a.val < b.val);
 }
 
 int main(){
-    while(cin >> cases){
-        for(int i = 0; i < cases; i++){
-            cin >> len >> entries;
-            for(int j = 0 ; j < entries; j++){
-
-                for(int k = 0; k < len; k++){
-                    cin >> arr[j].gene[k];
-                }
-                arr[j].len = len;
-                getChaoticity(&arr[j]);
-
-            }
-            sortDNA(0, entries);
-            //cout << "b" << endl;
-            for(int m = 0; m < entries; m++){
-
-                cout << arr[m].gene << " "<<arr[m].chaoticity<<  endl;
-            }
-
-        }
+  cin>>T;
+  while(T--){
+    cin >> x >> n;
+    Obj arr[n + 1];
+    for(int i = 0; i < n; i++){
+        cin >> _s;
+        arr[i] = Obj(i, _s);
     }
+    sort(arr, arr + n, cmp);
+    if(!f) f = true;
+    else cout << endl;
+    for(int i = 0; i < n - 1; i++){
+        cout << arr[i].s << endl;
+    }
+    cout << arr[n-1].s << endl;
+    //if(T > 1) cout << endl;
+    //cout << endl;
+  }
 }

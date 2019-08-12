@@ -1,0 +1,37 @@
+#include <iostream>
+#include <map>
+#include <vector>
+using namespace std;
+
+int N;
+vector<int> vec;
+map<int, int> freqs;
+map<int, int> ffreqs; //how many numbers have frequency X
+int main(){
+    cin >> N;
+    vec.resize(N);
+    int maxAns = 0;
+    for(int i = 0; i < N; i++){
+        cin >> vec[i];
+        if(freqs.count(vec[i])){ //frequency > 0
+            ffreqs[freqs[vec[i]]]--;
+            if(!ffreqs[freqs[vec[i]]]){
+                ffreqs.erase(ffreqs.find(freqs[vec[i]]));
+            }
+        }
+        freqs[vec[i]]++;
+        ffreqs[freqs[vec[i]]]++;
+        if((ffreqs.size() == 1 && (freqs.size() == 1 || ffreqs.begin()->first == 1))){
+            maxAns = i;
+        } else if(ffreqs.size() == 2){
+            //cout << "I: " << i << endl;
+            if(ffreqs.begin()->second == 1 && (ffreqs.begin()->first == ffreqs.rbegin()->first + 1 || ffreqs.begin()->first == 1)){
+                maxAns = i;
+            } else if(ffreqs.rbegin()->second == 1 && (ffreqs.begin()->first + 1 == ffreqs.rbegin()->first || ffreqs.rbegin()->first == 1)){
+                maxAns = i;
+            }
+        }
+    }
+    cout << maxAns + 1 << endl;
+}
+
