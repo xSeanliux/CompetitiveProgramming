@@ -1,29 +1,27 @@
 #include <iostream>
-#include <math.h>
+#include <algorithm>
+#define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
+#define int long long int
 using namespace std;
-int T, N;
 
-int main(){
+int T, N, DP[1005], vals[1005];
+
+inline int diff(int a, int b){
+    return (a >= b ? a - b : b - a);
+}
+
+signed main(){
+    ericxiao;
     cin >> T;
     while(T--){
         cin >> N;
-        long long int arr[N], dp[N];
-        for(int i = 0 ; i < N; i++){
-            cin >> arr[i];
-            dp[i] = 0;
+        for(int i = 0; i < N; i++){
+            cin >> vals[i];
+            if(!i) DP[i] = 0;
+            else if(i == 1) DP[i] = diff(vals[1], vals[0]);
+            else DP[i] = min(DP[i - 1] + diff(vals[i], vals[i - 1]), DP[i - 2] + diff(vals[i], vals[i - 2]));
+            //cout << "DP[" << i << "] = " << DP[i] << endl;
         }
-        if(N == 2) {
-            cout << abs(arr[1] - arr[0]) << endl;
-            continue;
-        }
-        dp[0] = 0;
-        dp[1] = arr[1] - arr[0];
-        for(int i = 2; i < N; i++){
-            dp[i] = dp[i-1] + abs(arr[i] - arr[i-1]);
-            for(int j = 0; j < i; j++){
-                dp[i] = min(dp[i], dp[j] + abs(arr[j] - arr[i]));
-            }
-        }
-        cout << dp[N-1] << endl;
+        cout << DP[N - 1] << endl;
     }
 }

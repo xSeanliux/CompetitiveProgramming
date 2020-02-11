@@ -2,7 +2,7 @@
 #define int long long int
 using namespace std;
 
-struct Node{
+struct Node{ //binary trie
     int cnt;
     Node *z, *o;
     Node(): cnt(0), z(NULL), o(NULL){}

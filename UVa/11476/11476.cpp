@@ -2,17 +2,43 @@
 #include <iostream>
 #include <math.h>
 #include <map>
+#include <string.h>
 #define ulli unsigned __int128 //hehe massive numbers are allowed now
 using namespace std;
-ulli A = 1, oriN, N, T;
+ulli A = 1, oriN, N, seed = 101;
 ulli toCheck[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 37};
-map<ulli, int> ps;
+map<ulli, ulli> ps;
+
+int T;
+
+ulli Rand(){
+    return seed = seed * seed + 13;
+}
+
+ulli toULLI(string s){
+    ulli r = 0;
+    for(char c : s){
+        r *= 10;
+        r += (c - '0');
+    }
+    return r;
+}
+
+string toStr(ulli x){
+    string s = "";
+    while(x){
+        s = (char)((x % 10) + '0') + s;
+        x /= 10;
+    }
+    return s;
+}
 
 ulli f(ulli x){
     return (x*x + A) % N;
 }
 
 ulli gcd(ulli a, ulli b){
+    //cout << "Running gcd(" << toStr(a) << ", " << toStr(b) << ")" << endl;
     return (!b) ? a : gcd(b, a % b);
 }
 
@@ -32,11 +58,11 @@ bool isPrime(ulli K){ //Miller-Rabin
         r++;
         d /= 2;
     }
-    for(int i = 0; i < 8 && toCheck[i] <= K-2; i++){
+    for(ulli i = 0; i < 8 && toCheck[i] <= K-2; i++){
         ulli x = modexp(toCheck[i]%K, d, K);
         if(x == 1 || x == K-1) continue;
         bool flag = true;
-        for(int j = 0; j < r; j++){
+        for(ulli j = 0; j < r; j++){
             x = (x * x) % K;
             if(x == K-1){
                 flag = false;
@@ -48,23 +74,21 @@ bool isPrime(ulli K){ //Miller-Rabin
     return true;
 }
 
-int findFactor(ulli N){ //Pollard Rho
-    //printf("Finding factor of %llu\n", N);
-    if(N == 1 || isPrime(N));
+ulli findFactor(ulli N){ //Pollard Rho
+    //cout << "Finding factor of " << toStr(N) << endl;
+    if(N == 1 || isPrime(N)) return N;
     if(!(N % 2)) return 2;
     ulli a, b, res = 1;
     bool flag = false;
-    srand(time(NULL));
     while(true){
-        a = (rand()%(N-2)) + 2;
+        a = (Rand()%(N-2)) + 2;
+        //cout << "a = " << toStr(a) << endl;
         b = a;
-        A = rand() + 1;
+        A = Rand() + 1;
         do{
-            //printf("new set of val\n");
             b = f(f(b));
             a = f(a);
             res = gcd(N, max(a, b) - min(a, b));
-            //printf("(a, b) = (%llu, %llu), res = %llu, N = %llu\n", a, b, res, N);
             if(res > 1){
                 if(res == N) break; //new set of vals
                 return res;
@@ -75,43 +99,48 @@ int findFactor(ulli N){ //Pollard Rho
 }
 
 void factorize(ulli N){
-    //cout << "Factorizing " << N << endl;
+    //cout << "Factorizing " << toStr(N) << endl;
     if(N == 1) return;
     if(isPrime(N)){
         if(ps.count(N)){
             ps[N]++;
         } else {
-            ps.insert(pair<ulli, int>(N, 1));
+            ps.insert(pair<ulli, ulli>(N, 1));
         }
-        //printf(" %llu", N);
+        //prullif(" %llu", N);
         return;
     }
-    //cout << N << " is composite " << endl;
+    //cout << toStr(N) << " is composite " << endl;
     ulli res = findFactor(N);
-    //cout << "Found factor: " << res << endl;
+    //cout << "Found factor: " << toStr(res) << endl;
     factorize(res);
     factorize(N/res);
 }
 
+string s;
 
 
-int main(){
-    scanf("%llu", &T);
+
+signed main(){
+    cin >> T;
     while(T--){
-        scanf("%llu", &N);
+        cin >> s;
+        N = toULLI(s);
         ps.clear();
         //cout << "isPrime(" << N << ") = " << isPrime(N) << endl;
         factorize(N);
-        printf("%llu =", N);
+        //prullif("%llu =", N);
+        cout << toStr(N) << " = ";
         for(auto i = ps.begin(); i != ps.end(); i++){
             if(i != ps.begin()){
-                printf(" *");
+                cout << " *";
             }
-            printf(" %llu", i->first);
+            cout << " " << toStr(i->first);
             if(i->second > 1){
-                printf("^%d", i->second);
+                cout << "^" << toStr(i->second);
             }
         }
-        printf("\n");
+        cout << endl;
+        //prullif("\n");
     }
 }

@@ -1,136 +1,143 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 #include <algorithm>
+#define pii pair<int,int>
+#define F first
+#define S second
+#define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
-const int MAXN = 50000, MAXQ = 10000;
+const int maxN = 6e4 + 10, INF = 1e9;
 
-struct OP{
-    int l, r, k, ans;
-    /*
-    If it's a query:
-        search kth in [l, r]
-    Else if it's a modify
-        l == -1: Add k at r
-        l == -2: Remove k at r
-    */
-} ops[MAXN + 2 * MAXQ + 10];
+int T, N, Q, com, l, r, c, v, qc, ans[maxN], arr[maxN];
+vector<int> lis;
 
-int n, q, com, arg1, arg2, arg3, arr[MAXN + 10], bit[MAXN + 10], t;
-vector<int> p;
+struct Obj{
+	int l, r, type, val, id;
+	Obj(int l, int r, int type, int val, int id): l(l), r(r), type(type), val(val), id(id){}
+	Obj(){}
+};
 
-inline void add(int x, int p){
-    for(; p <= n; p += (p & -p)) bit[p] += x;
+struct BIT{
+	int arr[maxN], n;
+	vector<pii> ops;
+	BIT(int nval): n(nval){
+		ops.clear();
+		fill(arr, arr + n, 0);
+	}
+	BIT(){}
+	void modify(int p, int x){
+		ops.emplace_back(p, x);
+		for(;p <= n; p += (p & -p)) arr[p] += x;
+	}
+	int query(int p){
+		int r = 0;
+		for(; p > 0; p -= (p & -p)) r += arr[p];
+		return r;
+	}
+	void undo(){
+		int p, x;
+		for(pii op : ops){
+			p = op.F;
+			x = -op.S;
+			for(;p <= n; p += (p & -p)) arr[p] += x;
+		}
+		vector<pii>().swap(ops);
+	}
+} bit;
+
+void total_bs(int l, int r, vector<Obj> objs){
+	//cout << "Running total bs of " << l << ", " << r << endl;
+	if(!objs.size()) return;
+	if(l + 1 == r){
+		for(Obj obj : objs){
+			if(obj.type == 1){
+				ans[obj.id] = l;
+			}
+		}
+		return; 
+	}
+	vector<Obj> lft, rgt;
+	int m = (l + r) / 2, smallerthan;
+	for(Obj &obj : objs){
+		//cout << "Looking at obj: type = " << obj.type << ", (l r) = " << obj.l << " " << obj.r << ", val = " << obj.val << endl;
+		if(obj.type == 1){
+			smallerthan = bit.query(obj.r) - bit.query(obj.l - 1);
+			//cout << "SmallerThan = " << smallerthan << endl;
+			if(smallerthan < obj.val){
+				obj.val -= smallerthan;
+				rgt.push_back(obj);
+			} else {
+				lft.push_back(obj);
+			}
+		} else if(obj.type == 2){
+			if(obj.val < m){
+				//cout << "Adding at " << obj.l << endl;
+				bit.modify(obj.l, obj.r);
+				lft.push_back(obj);
+			} else {
+				rgt.push_back(obj);
+			}
+		}
+	}
+	bit.undo();
+	total_bs(l, m, lft);
+	total_bs(m, r, rgt);
 }
 
-inline int sum(int p){
-    int res = 0;
-    for(; p; p -= (p & -p)) res += bit[p];
-    return res;
-}
-
-
-/*
-0 1 2 3 4 5
-2 3 5 6 7 8
-
-2 3 8 6 7
-0 1 5 3 4
-
-*/
-void do_ops(int mid, vector<int>& VS, int type, bool modify){
-    for(int i : VS){
-        if(ops[i].l == -1){ //Add
-            if(ops[i].k <= mid) add(type, ops[i].r);
-        } else if(ops[i].l == -2){ //Remove
-            if(ops[i].k <= mid) add(-type, ops[i].r);
-        } else if(modify){
-            ops[i].ans = sum(ops[i].r) - sum(ops[i].l - 1);
-            //printf("ops[%d].ans = %d\n", i, ops[i].ans);
-        }
-    }
-}
-
-void divide(int mid, vector<int>& VS, vector<int>& LS, vector<int>& RS){
-    for(int i : VS){
-        if(ops[i].l < 0 && ops[i].l != -3){ //modify
-            if(ops[i].k <= mid) LS.emplace_back(i);
-            else RS.emplace_back(i);
-        } else { //query
-            if(ops[i].ans >= ops[i].k) LS.emplace_back(i);
-            else {
-                RS.emplace_back(i);
-                ops[i].k -= ops[i].ans;
-            }
-        }
-    }
-    vector<int>().swap(VS); //empty VS
-}
-
-void total_bs(int l, int r, vector<int>& VS){ //lol
-    if(!VS.size()) return;
-    //printf("Running BS(%d, %d)\n", l, r);
-    if(l == r){
-        for(int i : VS) ops[i].ans = l;
-        return;
-    }
-    int mid = l + r >> 1;
-    vector<int> LS, RS;
-    do_ops(mid, VS, 1, true);
-    divide(mid, VS, LS, RS);
-    do_ops(mid, LS, -1, false);
-    //for the above line, if divide() has a VS.clear() (or vector<int>().swap(VS)),
-    //then you need to use do_ops(mid, LS, -1, false) to undo the operations done
-    //since every operation you did will be put in LS anyway, undo using it will be
-    //fine.
-
-    total_bs(l, mid, LS);
-    total_bs(mid + 1, r, RS);
-}
-
+vector<Obj> queries;
 
 int main(){
-    scanf("%d", &t);
-    while(t--){
-        p.clear();
-        scanf("%d%d", &n, &q);
-        int m = 0;
-        for(int i = 1; i <= n; i++){
-            scanf("%d", arr + i);
-            ops[m++] = {-1, i, arr[i], 0};
-            p.emplace_back(arr[i]);
-        }
-        for(int i = 1; i <= q; i++){
-            scanf("%d", &com);
-            if(com == 1){
-                scanf("%d%d%d", &arg1, &arg2, &arg3);
-                ops[m++] = {arg1, arg2, arg3, 0};
-            } else if(com == 2) {
-                scanf("%d%d", &arg1, &arg2);
-                ops[m++] = {-2, arg1, arr[arg1], 0};
-                ops[m++] = {-1, arg1, arg2, 0};
-                p.emplace_back(arr[arg1] = arg2);
-            } else {
-                scanf("%d%d", &arg1, &arg2);
-                ops[m++] = {-3, arg1, arg2, 69};
-            }
-        }
-        sort(p.begin(), p.end());
-        p.erase(unique(p.begin(), p.end()), p.end());
-        vector<int> VS; //stores the indices of the operations
-        for(int i = 0; i < n ; i++) bit[i] = 0;
-        for(int i = 0; i < m; i++){
-            if(ops[i].l == -3) continue;
-            if(ops[i].l < 0){
-                ops[i].k = lower_bound(p.begin(), p.end(), ops[i].k) - p.begin();
-                //cout << "OPS[" << i << "].k = " << ops[i].k << endl;
-            }
-            VS.emplace_back(i);
-        }
-        total_bs(0, p.size(), VS);
-        for(int i = n; i < m; i++){
-            if(ops[i].l == -3) printf("7122\n");
-            if(ops[i].l > 0) printf("%d\n", p[ops[i].ans]);
-        }
-    }
+	ericxiao;
+	cin >> T;
+	while(T--){
+		cin >> N >> Q;
+		bit = BIT(N + 1);
+		lis.clear();
+		queries.clear();
+		qc = 0;
+		for(int i = 1; i <= N; i++){
+			cin >> v;
+			arr[i] = v;
+			lis.push_back(v);
+			queries.emplace_back(i, 1, 2, v, -1);
+		}
+		for(int i = 0; i < Q; i++){
+			cin >> com;
+			if(com == 1){
+				cin >> l >> r >> c;
+				queries.emplace_back(l, r, 1, c, qc++);
+			} else if(com == 2){
+				cin >> c >> v;
+				lis.push_back(v);
+				queries.emplace_back(c, -1, 2, arr[c], -1);
+				queries.emplace_back(c, 1, 2, v, -1);
+				arr[c] = v;
+			} else if(com == 3) {
+				cin >> l >> r;
+				qc++;
+			}
+		}
+		sort(lis.begin(), lis.end());
+		for(Obj  &q : queries){
+			if(q.type == 2){
+				q.val = lower_bound(lis.begin(), lis.end(), q.val) - lis.begin() + 1;
+				//cout << "q: modify at " << q.l << ", now value = " << q.val << endl;
+			}
+		}
+		fill(ans, ans + qc, 0);
+		total_bs(1, N + Q + 1, queries);
+		for(int i = 0; i < qc; i++){
+			//cout << "ans[" << i << "] = " << ans[i] << endl;
+			cout << (!ans[i] ? 7122 : lis[ans[i] - 1])  << '\n'; 
+		}
+	}
 }
+/*
+5 3
+1 2 6 4 5
+1 3 4 1
+2 1 3
+1 1 1 1
+*/

@@ -1,50 +1,58 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
-#include <string.h>
-#define pb push_back
-using namespace std;
-//By S
-unsigned long long int ans(vector<int> vec){
+#define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
+#define gc getchar_unlocked
 
-    if(vec.size() == 1) return 0;
-    vector<int> left, right;
-    for(int i = 0; i < vec.size()/2; i++){
-        left.pb(vec[i]);
-        right.pb(vec[i + vec.size()/2]);
-    }
-    if(vec.size() % 2) right.pb(vec[vec.size() - 1]);
-    int ansl = ans(left);
-    int ansr = ans(right);
-    sort(left.begin(), left.end()); //crucial to ensure lower_bound works
-    //sort(right.begin(), right.end());
-    unsigned long long int res = 0;
-    /*
-    printf("The answer for vec:\n");
-    for(int n: vec) {
-        printf("%d ", n);
-    }
-    */
-    for(int n : right){
-        res += left.size() - (lower_bound(left.begin(), left.end(), n + 1) - left.begin()); //number of elements in left such that element is smaller than n
-    }
-    //printf("\nis %d\n", res + ansl + ansr);
-    res += ansl + ansr;
-    return res;
+using namespace std;
+
+const int maxN = 5e5 + 10;
+
+int N, T, vals[maxN], lis[maxN];
+
+void read(int &x)
+{
+    int c = gc();
+    x = 0;
+    for(;(c<48 || c>57);c = gc());
+    for(;c>47 && c<58;c = gc()) {x = (x<<1) + (x<<3) + c - 48;}
 }
 
-int N, k, c = 0;
+
+struct BIT{
+    int arr[maxN], N;
+    BIT(){}
+    BIT(int n): N(n){
+        fill(arr, arr + N + 1, 0);
+    }
+    inline void add(int p, int x){
+        for(;p <= N; p += (p & -p)) arr[p] += x;
+    }
+    inline int query(int p){
+        int r = 0;
+        for(;p > 0; p -= (p & -p)) r += arr[p];
+        return r;
+    }
+} bit;
 
 int main(){
-    while(cin >> N){
+    int c = 0;
+    scanf("%d", &N);
+    while(N){
         if(!N) return 0;
-        vector<int> vec;
+        bit = BIT(N + 1);
         for(int i = 0; i < N; i++){
-            scanf("%d", &k);
-            vec.pb(k);
+            scanf("%d", vals + i);
+            lis[i] = vals[i];
         }
-        printf("Case #%d: %llu \n", ++c, ans(vec));
+        sort(lis, lis + N);
+        int sz = unique(lis, lis + N) - lis;
+        for(int i = 0; i < N; i++) vals[i] = upper_bound(lis, lis + sz, vals[i]) - lis;
+        long long int ans = 0;
+        for(int i = 0; i < N; i++){
+            ans += bit.query(N + 1) - bit.query(vals[i]);
+            bit.add(vals[i], 1);
+        }
+        printf("Case #%d: %lld\n", ++c, ans);
+        scanf("%d", &N);
     }
 }
-
-

@@ -1,78 +1,41 @@
 #include <iostream>
 #include <vector>
-#include <map>
-#include <math.h>
+#include <algorithm>
 #define int long long int
+#define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
-const int maxN = 1e6;
-vector<int> primes;
-map<int, int> pows;
-bool isPrime[maxN + 10];
-int T, K, d;
-
-void getPrime(){
-    for(int i = 0; i < maxN; i++) isPrime[i] = i & 1;
-    isPrime[1] = false;
-    isPrime[2] = true;
-    for(int i = 2; i < maxN; i++){
-        if(isPrime[i]){
-            primes.push_back(i);
-        }
-        for(int j = 0; j < primes.size() && primes[j] * i < maxN; j++){
-            isPrime[i * primes[j]] = false;
-            if(!(i % primes[j])) break;
-        }
-    }
-}
-
-void run(int x){
-    for(int i : primes){
-        if(i*i > x) break;
-        int p = 0;
-        if(!(x % i)){
-            while(!(x % i)){
-                p++;
-                x /= i;
-            }
-            pows[i] = max(p, pows[i]);
-        }
-    }
-    if(x > 1 && !pows.count(x)){
-        pows[x] = 1;
-    }
-}
-
+int q, n, ans, dc;
+vector<int> divs;
 
 signed main(){
-    getPrime();
-    cin >> T;
-    while(T--){
-        pows = map<int, int>();
-        cin >> K;
-        for(int i = 0; i < K; i++){
-            cin >> d;
-            run(d);
+    ericxiao;
+    cin >> q;
+    while(q--){
+        cin >> n;
+        divs.resize(n);
+        for(int i = 0; i < n; i++) cin >> divs[i];
+        sort(divs.begin(), divs.end());
+        ans = divs[0] * divs[n - 1];
+        bool canDo = true;
+        for(int d : divs) if(ans % d){
+            cout << -1 << endl;
+            canDo = false;
+            break;
         }
-        int totalDivs = 1;
-        for(auto p : pows){
-            //cout << p.first << " " << p.second << endl;
-            totalDivs *= (p.second + 1);
-            if(totalDivs > K + 2){
+        dc = 0;
+        for(int i = 2; i * i <= ans && canDo; i++){
+            if(!(ans % i)){
+                dc += 1 + (i * i != ans);
+            }
+            if(dc > n){
                 cout << -1 << endl;
+                canDo = false;
                 break;
             }
         }
-        if(totalDivs < K + 2 || totalDivs > K + 2){
-            cout << -1 << endl;
-            break;
+        if(canDo){
+            cout << ans << endl;
         }
-        int ans = 1;
-        for(auto p : pows){
-            ans *= pow(p.first, p.second);
-        }
-        if(pows.size() == 1) ans *= pows.begin()->first;
-        cout << ans << endl;
     }
-
 }

@@ -55,7 +55,6 @@ int query(Node *a, Node *b, int l, int r, int k){
 int N, M, x, arr[maxN + 10];
 vector<int> sor, bk;
 signed main(){ //one base
-    //assert(0 == 1);
     ios_base::sync_with_stdio(0); cin.tie(0);
     cin >> N >> M;
     for(int i = 1; i <= N; i++){

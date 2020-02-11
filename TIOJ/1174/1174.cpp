@@ -1,32 +1,40 @@
 #include <iostream>
-#include <math.h>
+#include <utility>
 #include <algorithm>
+#define pii pair<int,int>
+#define F first
+#define S second
+#define int long long int
+#define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
-int N, M;
+const int maxN = 1e5 + 226, INF = 1e17;
 
-int main(){
-    while(cin >> N >> M){
-        if(N > M) swap(N, M);
-        int arr1[N + 1], arr2[M + 1];
-        for(int i = 0; i < N; i++){
-            cin >> arr1[i];
+inline int Abs(int x){
+    return x < 0 ? -x : x;
+}
+
+int N, M, a[maxN], b[maxN], lastA, lastB, ans, ap, bp;
+
+signed main(){
+    ericxiao;
+    cin >> N >> M;
+    for(int i = 0; i < N; i++) cin >> a[i];
+    for(int i = 0; i < M; i++) cin >> b[i];
+    sort(a, a + N);
+    sort(b, b + M);
+    a[N] = b[M] = ans = lastA = lastB = INF;
+    ap = bp = 0;
+    while(ap < N || bp < M){
+        if(bp == M || a[ap] <= b[bp]){
+            //cout << "Putting a: " << a[ap] << endl;
+            if(lastB != INF) ans = min(ans, Abs(lastB - a[ap]));
+            lastA = a[ap++];
+        } else {
+            //cout << "Putting b: " << b[bp] << endl;
+            if(lastA != INF) ans = min(ans, Abs(lastA - b[bp]));
+            lastB = b[bp++];
         }
-        for(int i = 0; i < M; i++){
-            cin >> arr2[i];
-        }
-        sort(arr2, arr2 + M); //only arr2 needs to be sorted
-        int currentAns = 2147483647;
-        for(int i = 0; i < N; i++){
-            int ind = lower_bound(arr2, arr2 + M, arr1[i]) - arr2;
-            //cout << arr2[ind] << endl;
-            //cout << "Found: " << arr2[ind] << ", checking for the value " << arr1[i] << endl;
-            if(ind > 0){
-                currentAns = min(currentAns, min(abs(arr1[i] - arr2[ind]), abs(arr1[i] - arr2[ind-1])));
-            } else {
-                currentAns = min(currentAns, abs(arr1[i] - arr2[ind]));
-            }
-        }
-        cout << currentAns << endl;
     }
+    cout << ans << endl;
 }

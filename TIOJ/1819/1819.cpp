@@ -15,7 +15,7 @@ int main(){
         else s.insert(a);
         if(s.count(b)) s.erase(b);
         else s.insert(b);
-        maxL = max(maxL, (int)s.size());
+        maxL = max(maxL, (int)(s.size() + 1)/ 2);
     }
-    printf("%d\n", maxL/2);
+    printf("%d\n", maxL);
 }

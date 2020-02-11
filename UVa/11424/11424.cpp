@@ -33,7 +33,6 @@ void go(){
         bool flag = true;
         for(long long int j = 0; j < pHead && flag && i * primes[j] <= N; j++){
                 isPrime[i * primes[j]] = false;
-                //cout << "phi[" << i * primes[j] << "] = " << "phi[" << i << "] * phi[" << primes[j] << "] = " <<  phi[i] << " * " << primes[j]<< endl;
                 phi[ i * primes[j] ] = phi[i] * phi[ primes[j] ];
                 if(!(i % primes[j])){
                     int maxPow = 1, I = i * primes[j];
@@ -43,9 +42,7 @@ void go(){
                     }
                     if(I == 1){
                         phi[i * primes[j]] = maxPow - maxPow/primes[j];
-                        //cout << "phi[" << i * primes[j] << "] = " << maxPow - (maxPow)/primes[j] << endl;
                     } else {
-                        //cout << "phi[" << i * primes[j] << "] = " << maxPow - maxPow/primes[j] << endl;
                         phi[i * primes[j]] = phi[maxPow] * phi[I];
                     }
                     sum[i*primes[j]] += phi[i] * primes[j];
