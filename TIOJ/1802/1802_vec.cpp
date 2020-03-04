@@ -6,15 +6,6 @@
 #define S second
 using namespace std;
 
-/*
-This receives a verdict of MLE on TIOJ for unknown reasons
-hopefully I can debug it later on qq
-AC code is in 1802_vec.cpp, where the adjancency list is implemented with
-the standard vector approach
-
-Mar. 4 2020
-*/
-
 inline char readchar() {
     static const size_t bufsize = 65536;
     static char buf[bufsize];
@@ -41,7 +32,7 @@ const int maxN = 1e6 + 10;
 const int INF = 1e9;
 
 int N, M, u, v, w, from[maxN], ans[maxN], m, tp;
-int len[maxN];
+int len[maxN], W;
 bitset<maxN> visited, inQ;
 
 class Cmp{
@@ -53,41 +44,27 @@ public:
 
 priority_queue<int, vector<int>, Cmp > pq;
 
+struct Node{
+    int v, w;
+    Node *next;
+    Node(int V, int W): v(V), w(W), next(NULL){}
+} *n;
 
-
-struct LinkedList{
-    int sz;
-    LinkedList(): s(NULL), e(NULL), sz(0){}
-    struct Node{
-        int v, w;
-        Node *next;
-        Node(int V, int W): v(V), w(W), next(NULL){}
-    } *s, *e;
-    void addEdge(int v, int w){
-        sz++;
-        if(!s){
-            s = new Node(v, w);
-            e = s;
-        } else {
-            e->next = new Node(v, w);
-            e = e->next;
-        }
-    }
-} adj[maxN];
+vector<pii> adj[maxN];
 
 int main(){
     Read(N);
     Read(M);
-    fill(adj + 1, adj + 2 + N, LinkedList());
+//    fill(adj + 1, adj + 2 + N, LinkedList());
 
     for(int i = 0; i < M; i++){
         Read(u);
         Read(v);
         Read(w);
         if(u == v) continue;
-        adj[u].addEdge(v, w);
+        adj[u].emplace_back(v, w);
     }
-    return 0;
+    //return 0;
     fill(len + 1, len + N + 2, INF);
     fill(from, from + N + 2, -1);
     len[1] = 0;
@@ -99,13 +76,9 @@ int main(){
         pq.pop();
         if(visited[tp]) continue;
         visited[tp] = true;
-        auto n = adj[tp].s;
+//        n = adj[tp].s;
         //cout << "Looking at " << tp.S << endl;
-        for(int i = 0; i < adj[tp].sz; i++, n = n->next){
-            u = n->v;
-            w = n->w;
-            //cout << "u = " << n->v << ", W = " << n->w << endl;
-            n = n->next;
+        for(auto [u, w] : adj[tp]){
             if(visited[u]) continue;
             if(len[u] > len[tp] + w){
                 len[u] = len[tp] + w;
@@ -128,4 +101,5 @@ int main(){
     for(int i = m - 1; i; i--) printf("%d-", ans[i]);
     printf("%d\n", N + 1);
 }
+
 
