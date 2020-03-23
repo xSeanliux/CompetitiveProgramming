@@ -7,11 +7,11 @@
 #define int unsigned long long int
 using namespace std;
 
-const int maxN = 3e6, maxM = 3e6, maxQ = 3e6;
+const int maxN = 3e5, maxM = 3e5, maxQ = 3e5;
 int bit[maxM + 10], need[maxN + 10], has[maxN + 10], ans[maxN + 10], comp[maxM + 10], N, M, Q, ll, rr, mm;
 vector<int> indexes[maxN + 10];
 
-inline int mod(int p, int x){
+inline void mod(int p, int x){
     for(int i = p; i <= M; i += (i & -i)){
         bit[i] += x;
     }

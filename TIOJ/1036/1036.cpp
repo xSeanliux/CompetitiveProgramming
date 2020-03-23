@@ -1,4 +1,4 @@
-#include <iostream>
+#include <cstdio>
 #include <vector>
 #include <bitset>
 #define N 10000000
@@ -8,9 +8,30 @@ bitset<N+5> isPrime;
 vector <int> primes;
 int ans[N + 5];
 
+inline char readchar() {
+    static const size_t bufsize = 65536;
+    static char buf[bufsize];
+    static char *p = buf, *end = buf;
+    if (p == end) end = buf + fread_unlocked(buf, 1, bufsize, stdin), p = buf;
+    return *p++;
+}
+
+inline void const Read(int & p) {
+	p = 0;
+	int tmp = 0;
+	char c = readchar();
+	tmp = !(c^'-');
+	while (c < '0' || c > '9') {
+		c = readchar();
+	}
+	while (c >= '0' && c <= '9')
+		p = (p<<3)+(p<<1)+(c^48), c = readchar();
+	p = tmp?-p:p;
+}
+
 void getPrimes(){
     for(int i = 0; i < N + 5; i++){
-        isPrime[i] = mi % 2;
+        isPrime[i] = i % 2;
     }
     isPrime[2] = true;
     isPrime[1] = false;
@@ -36,9 +57,9 @@ int n, m;
 
 int main(){
     getPrimes();
-    cin >> n;
+    Read(n);
     for(int i = 0; i < n; i++){
-        cin >> m;
-        cout << ans[m] << endl;
+        Read(m);
+        printf("%d\n", ans[m]);
     }
 }
