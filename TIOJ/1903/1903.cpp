@@ -15,7 +15,7 @@
 #define endl '\n'
 using namespace std;
 
-const int maxN = 7e5;
+const int maxN = 6e5;
 
 int T, N, M, Q, a, b, cc, ans[maxN + 10], dsu[maxN + 10], rk[maxN + 10];
 char com;
