@@ -1,0 +1,31 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <utility>
+#define pii pair<int,int>
+#define F first
+#define S second
+#define all(x) x.begin(), x.end()
+using namespace std;
+
+const int maxN = 226;
+int N, arr[maxN];
+vector<int> ind;
+vector<pii> ans;
+
+int main(){
+	cin >> N;
+	for(int i = 0; i < N; i++) cin >> arr[i];
+	for(int i = 0; i < N; i++){
+		ind.clear();	
+		for(int j = i + 1; j < N; j++){
+			if(arr[j] < arr[i]){
+				ind.push_back(j);	
+			}
+		}
+		sort(all(ind), [](int a, int b){
+			return arr[a] > arr[b];	
+		});
+		for(int x : a
+	}
+}
