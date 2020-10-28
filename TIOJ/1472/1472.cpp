@@ -1,93 +1,41 @@
-#include <bits/stdc++.h>
-#define pii pair<int,int>
-#define F first
-#define S second
+#pragma GCC target("popcnt")
+#pragma gcc optimize ("O3", "unroll-loops")
+#include <iostream>
 using namespace std;
-const int maxn=2005;
-const int inf=INT_MAX;
-struct edge
-{
-    int to,cap,rev;
-};
-vector<edge> G[maxn];
-bool used[maxn];
-void add_edge(int from ,int to,int cap)
-{
-    G[from].push_back((edge){to,cap,G[to].size()});
-    G[to].push_back((edge){from,0,G[from].size()-1});
-}
-int dfs(int v,int t,int f)
-{
-    if(v==t)
-        return f;
-    used[v]=true;
-    for(int i=0;i<G[v].size();i++)
-    {
-        edge &e=G[v][i];
-        if(!used[e.to]&&e.cap>0)
-        {
-            int d=dfs(e.to,t,min(f,e.cap));
-            if(d>0)
-            {
-                e.cap-=d;
-                G[e.to][e.rev].cap+=d;
-                return d;
-            }
-        }
-    }
-    return 0;
-}
-int max_flow(int s,int t)
-{
-    int flow=0;
-    for(;;)
-    {
-        memset(used,false,sizeof(used));
-        int f=dfs(s,t,inf);
-        if(f==0)
-            return flow;
-        flow+=f;
-    }
-}
-void ini(int n)
-{
-    for(int i=0;i<n;i++)
-        G[i].clear();
+
+const int maxN = 24, M = 1e9 + 7;
+int ind[1 << maxN], s[maxN], t[maxN], N, dp[1 << maxN], val[1 << maxN], x;
+
+inline bool nocon(int a, int b){
+	if(s[a] > s[b]) swap(a, b);
+	return t[b] < t[a] || s[b] > t[a];
 }
 
-int N, a, b;
-vector<pii> segs;
-
-bool cmp(pii a, pii b){
-    return (a.F < b.F && b.S < a.S) ||(a.S < b.F);
-}
-
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin >> N;
-    ini(2 * N + 20);
-    //1: s
-    //2N + 2: t
-    for(int i = 0; i < N; i++){
-        cin >> a >> b;
-        segs.emplace_back(a, b);
-        add_edge(1, i + 2, 1);
-        //cout << "For " << a << " " << b << endl;
-        add_edge(i + N + 2, 2 * N + 2, 1);
-        //cout << "1 " << i + 2 << endl;
-        //cout << i + N + 2 << " " << 2 * N + 2 << endl;
-        for(int j = 0; j < i; j++){
-            //cout << "Looking at" << segs[j].F << " " << segs[j].S << endl;
-            if(cmp(segs[j], segs[i])){
-                add_edge(j + 2, i + N + 2, maxn);
-                //cout << j + 2 << " " << i + N + 2 << endl;
-            } else if(cmp(segs[i], segs[j])){
-                add_edge(i + 2, j + N + 2, maxn);
-                //cout << i + 2 << " " << j + N + 2 << endl;
-            }
-        }
-    }
-    cout << N - max_flow(1, 2 * N + 2) << endl;
-    return 0;
+signed main(){
+	cin >> N;
+	for(int i = 0; i < N; i++) cin >> s[i] >> t[i];
+	for(int i = 0; i < N; i++){
+		for(int j = 0; j < N; j++){
+			if(nocon(i, j)) ind[1 << i] |= (1 << j);
+		}
+	}
+	for(register int i = 1; i < (1 << N); i++){
+		x = i & -i;
+		dp[i] = dp[i - x] + dp[i & ind[x]] + 1;
+		val[i] = dp[i];
+	}
+	for(int k = 1; k <= N; k++){
+		long long int c = 0;
+		for(register int i = 1; i < (1 << N); i++){
+			if(__builtin_popcount(i) & 1) c += val[i];
+			else c -= val[i];
+			if(c >= M) c -= M;
+			if(c <  0) c += M;
+		}
+		if(c != 0){
+			cout << k << endl;
+			return 0;
+		}
+		for(int i = 1; i < (1 << N); i++) val[i] = (long long int)val[i] * dp[i] % M;
+	}
 }

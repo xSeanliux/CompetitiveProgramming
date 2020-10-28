@@ -1,36 +1,40 @@
 #include <iostream>
-#include <stack>
+#include <vector>
+#include <algorithm>
 #define int long long int
-#define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
-const int maxN = 5e6 + 10;
+const int maxN = 5e6 + 326;
+int N, avg, ans, c;
+vector<int> vals;
 
-int N, vals[maxN], avg, ans = 0, take, t;
+inline int Abs(int x){
+	return x < 0 ? -x : x;
+}
+
+inline int solve(vector<int> vals){
+	int r = 0; 
+	//for(int x : vals) cout << x << " ";
+	//cout << endl;
+	for(int i = 0; i < N - 1; i++){
+		r += Abs(vals[i] - avg);
+		vals[i + 1] += vals[i] - avg; 
+	}
+	return r;
+}
 
 signed main(){
-    ericxiao;
-    cin >> N;
-    for(int i = 0; i < N; i++){
-        cin >> vals[i];
-        avg += vals[i];
-    }
-    avg /= N;
-    for(int i = 0; i < N; i++) vals[i] -= avg;
-    stack<int> que;
-    for(int i = 0; i < N; i++){
-        if(vals[i] < 0) que.push(i);
-        else {
-            if(que.empty()) continue;
-            t = que.top();
-            take = min(vals[i], -vals[t]);
-            vals[i] -= take;
-            vals[t] += take;
-            if(vals[i] == 0) que.pop();
-            ans += (i - t) * take;
-            for(int i = 0; i < N; i++) cout << vals[i] << " ";
-            cout << endl;
-        }
-    }
-
+	cin >> N;
+	vals.resize(N);
+	for(int i = 0; i < N; i++){
+		cin >> vals[i];
+		avg += vals[i];
+	}
+	avg /= N;
+	ans = solve(vals);
+	int r = Abs(vals[0] - avg); 
+	vals[0] = avg;
+	vals[vals.size() - 1] += vals[0] - avg; 
+	ans = min(ans, solve(vals) + r);
+	cout << ans << endl;
 }
