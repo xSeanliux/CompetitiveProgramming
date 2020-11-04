@@ -10,7 +10,7 @@ string _dir = "/Users/liusean/Desktop/Projects/Coding/CompetitiveProgramming/pbs
 
 
 
-const int maxN = 1e5, startt = 11, endt = 20, maxC = 1e9;
+const int maxN = 100000, startt = 16, endt = 25, maxC = 1e9;
 int seed = 101;
 
 int N, M, K;

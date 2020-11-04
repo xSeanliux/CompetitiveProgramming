@@ -63,6 +63,6 @@ inline void solve(string folder, int tc){
 
 signed main(){
 	sieve();
-	for(int t = 0; t <= 20; t++) solve("alltest", t);
+	for(int t = 0; t <= 25; t++) solve("alltest", t);
 }
 
