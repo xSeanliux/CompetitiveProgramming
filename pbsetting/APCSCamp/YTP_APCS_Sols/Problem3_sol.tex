@@ -1,0 +1,225 @@
+\documentclass[12pt,a4paper]{article}
+
+%%%%%%%%%%%%%%%引入Package%%%%%%%%%%%%%%%
+\usepackage[margin=3cm]{geometry} % 上下左右距離邊緣2cm
+\usepackage{amssymb,amsmath,amsthm} % 引入 AMS 數學環境
+\usepackage{yhmath}      % math symbol
+\usepackage{mathtools}
+\usepackage{mathtools}
+\usepackage{graphicx}    % 圖形插入用
+%\graphicspath{{images/}}  % 搜尋圖片目錄
+\usepackage[normalem]{ulem} %strikethrough
+%\usepackage{wrapfig}     % 文繞圖
+%\usepackage{floatflt}    % 浮動 figure
+%\usepackage{float}       % 浮動環境
+%\usepackage{subfig}      % subfigures
+%\usepackage{caption3}    % caption 增強
+%\usepackage{setspace}    % 控制空行
+\usepackage{fontspec}    % 加這個就可以設定字體
+\usepackage{type1cm}	 % 設定fontsize用
+\usepackage{titlesec}   % 設定section等的字體
+\usepackage{titling}    % 加強 title 功能
+
+\usepackage{fancyhdr}   % 頁首頁尾
+\usepackage{tabularx}   % 加強版 table
+\usepackage[square, comma, numbers, super, sort&compress]{natbib}
+% cite加強版
+\usepackage[unicode=true, pdfborder={0 0 0}, bookmarksdepth=-1]{hyperref}
+% ref加強版
+%\usepackage{soul}       % highlight
+%\usepackage{ulem}       % 字加裝飾
+\usepackage[usenames, dvipsnames]{color}  % 可以使用顏色
+%\usepackage{framed}     % 可以加文字方框
+\usepackage{enumerate}  % 加強版enumerate
+\usepackage{pgf,tikz}
+\usepackage{pgfplots} 
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows}
+\usepackage{datetime}
+\usepackage{mathtools}
+\usepackage{siunitx}
+%%%%%%%%%%%%%%中文 Environment%%%%%%%%%%%%%%%
+\usepackage{xeCJK}  % xelatex 中文
+\usepackage{multicol} %Multi-columned enumeration
+%\usepackage{CJKulem}	% 中文字裝飾
+\setCJKmainfont[AutoFakeBold=3,AutoFakeSlant=.4]{Noto Sans CJK TC Light}
+\defaultCJKfontfeatures{AutoFakeBold=3,AutoFakeSlant=.4}
+%\newCJKfontfamily\Kai{楷體-繁}
+%\newCJKfontfamily\Hei{微軟正黑體}
+%\newCJKfontfamily\NewMing{新細明體}
+%設定中文為系統上的字型，而英文不去更動，使用原TeX字型
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+\usepackage{ruby}
+%%%%%%%%%%%%%%%字體大小設定%%%%%%%%%%%%%%%
+%\def\normalsize{\fontsize{10}{15}\selectfont}
+%\def\large{\fontsize{40}{60}\selectfont}
+%\def\Large{\fontsize{50}{75}\selectfont}
+%\def\LARGE{\fontsize{90}{20}\selectfont}
+%{\arabic{section}}{0em}{}
+%\titleformat{\section}{\centering\Large}
+%{\arabic{section}}{0em}{}
+%\titleformat{\subsection}{\large}
+%{\arabic{subsection}}{0em}{}
+%\titleformat{\subsubsection}{\bf\normalsize}
+% \def\huge{\fontsize{34}{51}\selectfont}
+% \def\Huge{\fontsize{38}{57}\selectfont}
+
+%%%%%%%%%%%%%%%Theme Input%%%%%%%%%%%%%%%%
+%\input{themes/chapter/neat}
+
+%%%%%%%%%%%titlesec settings%%%%%%%%%%%%%%
+%\titleformat{\chapter}{\bf\Huge}
+%{\arabic{subsubsection}}{0em}{}
+%\titleformat{command}[shape]{format}{label}
+%{編號與標題距離}{before}[after]
+
+%%%%%%%%%%%%variable settings%%%%%%%%%%%%%%
+%\numberwithin{equation}{section}
+%\setcounter{secnumdepth}{4}  %章節標號深度
+%\setcounter{tocdepth}{1}  %目錄深度
+
+%%%%%%%%%%%%%%%頁面設定%%%%%%%%%%%%%%%
+\setlength{\headheight}{15pt}  %with titling
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\parindent=24pt %設定縮排的距離
+%\parskip=1ex  %設定行距
+%\pagestyle{empty}  % empty: 無頁碼
+%\pagestyle{fancy}  % fancy: fancyhdr
+
+%use with fancygdr
+%\lhead{\leftmark}
+%\chead{}
+%\rhead{}
+%\lfoot{}
+%\cfoot{}
+%\rfoot{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+%\fancypagestyle{firststyle}
+%{
+%\fancyhf{}
+%\fancyfoot[C]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+%\renewcommand{\headrule}{\rule{\textwidth}{\headrulewidth}}
+%}
+
+%%%%%%%%%%%%%%%重定義一些command%%%%%%%%%%%%%%%
+\renewcommand{\contentsname}{目錄}  %設定目錄的標題名稱
+\renewcommand{\refname}{參考資料}  %設定參考資料的標題名稱
+\renewcommand{\abstractname}{\LARGE Abstract} %設定摘要的標題名稱
+
+%%%%%%%%%%%%%%%特殊功能函數符號設定%%%%%%%%%%%%%%%
+%\newcommand{\citet}[1]{\textsuperscript{\cite{#1}}}
+\newcommand{\np}[1]{\\[{#1}] \indent}
+\newcommand{\transpose}[1]{{#1}^\mathrm{T}}
+\newcommand{\adj}{\mathrm{adj}}
+%%%% Geometry Symbol %%%%
+\newcommand{\degree}{^\circ}
+\newcommand{\degre}{\ensuremath{^\circ}}
+\newcommand{\Arc}[1]{\wideparen{{#1}}}
+\newcommand{\Line}[1]{\overleftrightarrow{{#1}}}
+\newcommand{\Ray}[1]{\overrightarrow{{#1}}}
+\newcommand{\Segment}[1]{\overline{{#1}}}
+
+%%%% Other Symbol %%%%
+\newcommand{\floor}[1]{\lfloor#1\rfloor}
+\newcommand{\ceil}[1]{\lceil#1\rceil}
+\newcommand{\Cnk}[2]{C_{#2}^{#1}}
+\newcommand{\abs}[1]{|#1|}
+\newcommand{\divs}{\;|\;}
+\newcommand{\divdiv}{\;||\;}
+\newcommand{\ndivs}{\!\!\not| \;}
+\newcommand{\thm}[1]{{\bf Theorem {#1}}}
+\newcommand{\lmm}[1]{{\bf Lemma {#1}}}
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+\newcommand{\dd}[2]{\frac{\text{d}#1}{\text{d}#2}}
+\newcommand{\pdd}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\dx}[1]{\,\text{d}#1}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\sol}[2]{\textbf{Problem #1.} #2}
+%%%% OEIS Symbol %%%%
+%\newlength{\CapL}
+%\AtBeginDocument{\settoheight{\CapL}{A}}
+%\newcommand{\oeis}{\includegraphics[height = \CapL]{OEIS.png}}
+
+%%%%%%%%%%%%%%%證明、結論、定義等等的環境%%%%%%%%%%%%%%%
+\renewcommand{\proofname}{\bf 證明:} %修改Proof 標頭
+\newtheoremstyle{mystyle}% 自定義Style
+{6pt}{15pt}%       上下間距
+{}%               內文字體
+{}%               縮排
+{\bf}%            標頭字體
+{.}%              標頭後標點
+{1em}%            內文與標頭距離
+{}%               Theorem head spec (can be left empty, meaning 'normal')
+
+% 改用粗體，預設 remark style 是斜體
+
+\theoremstyle{mystyle}	% 定理環境Style
+%
+\newtheorem{theorem}{定理}
+\newtheorem{definition}{定義}
+\newtheorem{formula}{公式}
+\newtheorem{condition}{條件}
+\newtheorem{supposition}{假設}
+\newtheorem{example}{例}
+\newtheorem{conclusion}{結論}
+\newtheorem{lemma}{引理}
+\newtheorem{property}{性質}
+\newtheorem{ex}{Example}
+\newtheorem{pb}{Problem}
+\newtheorem{ppt}{Property}
+\newtheorem{df}{Definition}
+\newtheorem{thr}{Theorem}
+\newtheorem{lm}{Lemma}
+\newtheorem{cl}{Corollary}
+\newtheorem{hint}{Hint for Problem}
+\newtheorem{ans}{Answer for Problem}
+
+\title{YTP Problem 3： 納許均衡 - 解答 / Nash Equilibria - Solution}
+\author{劉至軒}
+
+\makeatletter %\@title only usable after this
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{劉至軒}
+\lhead{\@title}
+\rfoot{Page \thepage}
+
+\DeclareMathOperator{\sech}{sech} %Adds \sech function
+\DeclareMathOperator{\csch}{csch}
+
+%C++ Code 
+\usepackage{xcolor}
+\usepackage{minted} 
+\usepackage{sourcecodepro}
+\usepackage{listings}
+
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\setminted{fontsize=\footnotesize}
+
+\begin{document}
+	\maketitle
+	\section*{解答}
+		由題目的敘述可以知道，一個選項的組合 $(i, j)$ （$E$選 $i$ 而$C$選 $j$）為好的若且唯若：
+		\begin{enumerate}
+			\item 對於所有的 $i' \in [1, N]$，$X_{ij} \ge X_{i'j}$
+			\item 對於所有的 $j' \in [1, M]$，$Y_{ij} \ge Y_{ij'}$
+		\end{enumerate}
+		對於兩個條件分別去計算是否符合，再數符合條件者即可，總複雜度 $O(NM)$。
+	\section*{Solution}
+		From the problem statement, we know that a combination of choices $(i, j)$ (made by $E$ and $C$, respectively) is to be counted if and only if:
+		\begin{enumerate}
+			\item for all $i' \in [1, N]$, $X_{ij} \ge X_{i'j}$
+			\item for all $j' \in [1, M]$, $Y_{ij} \ge Y_{ij'}$
+		\end{enumerate}
+		and thus all that needs to be done is just to separately check if the statements are satisfied, and then count the ones which satisfy both constraints. This can be done in $O(NM)$ time. 
+		
+	\newpage
+	\section*{官解 / AC Code}
+	\inputminted[linenos,tabsize=4,breaklines,bgcolor=bg]{c++}{./p3_sol.cpp}
+		
+	
+\end{document}

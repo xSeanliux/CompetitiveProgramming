@@ -1,0 +1,30 @@
+randgen 10 10 > $
+randgen 100 100 > $
+randgen 40 40 > $
+randgen 50 50 > $
+periodgen 5 20 100 > $
+periodgen 10 10 100 > $
+gen2 100 100 > $
+gen2 100 100 a > $
+
+randgen 100 100 > $
+randgen 1000 1000 > $
+randgen 1000 1000 a > $
+randgen 400 400 > $
+randgen 100000 10 > $
+randgen 10 100000 > $
+periodgen 100 100 100 > $
+periodgen 1000 10 100 > $
+gen2 1000 1000 > $
+gen2 1000 1000 a > $
+gen2 1000 1000 b > $
+
+randgen 100000 100000 > $
+randgen 100000 100000 a > $
+randgen 100000 100000 b > $
+periodgen 10000 10 100000 > $
+periodgen 1000 100 100000 > $
+periodgen 100 1000 100000 > $
+gen2 100000 100000 > $
+gen2 100000 100000 a > $
+gen2 100000 100000 b > $

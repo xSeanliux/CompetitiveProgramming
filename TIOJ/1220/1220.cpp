@@ -2,32 +2,27 @@
 #include <unordered_set>
 #include <queue>
 #include <vector>
+#include <numeric>
+#include <algorithm>
 #define ericxiao ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
 const int maxN = 1e5 + 1, maxM = 2e6 + 10;
 
-int N, M, u, v, ans, t, last[maxN], nxt[maxN], prv[maxN], cnt, vis[maxN];
+int N, M, u, v, ans, t, last[maxN], nxt[maxN], prv[maxN], cnt, vis[maxN], dsu[maxN], sz[maxN];
 
-inline char readchar() {
-    static const size_t bufsize = 1 << 20;
-    static char buf[bufsize];
-    static char *p = buf, *end = buf;
-    if (p == end) end = buf + fread_unlocked(buf, 1, bufsize, stdin), p = buf;
-    return *p++;
+void Flat(int x){
+	if(x == dsu[x]) return;
+	Flat(dsu[x]);
+	dsu[x] = dsu[dsu[x]];
 }
 
-inline void const Read(int & p) {
-	p = 0;
-	int tmp = 0;
-	char c = readchar();
-	tmp = !(c^'-');
-	while (c < '0' || c > '9') {
-		c = readchar();
-	}
-	while (c >= '0' && c <= '9')
-		p = (p<<3)+(p<<1)+(c^48), c = readchar();
-	p = tmp?-p:p;
+void Merge(int a, int b){
+	Flat(a);
+	Flat(b);
+	if(dsu[a] == dsu[b]) return;
+	sz[dsu[a]] += sz[dsu[b]];
+	dsu[dsu[b]] = dsu[a];
 }
 
 struct Edge{
@@ -56,6 +51,7 @@ void bfs(int src){
 		for(int cur = last[t]; ~cur; cur = edges[cur].to) vis[edges[cur].v]++;
 		for(int i = nxt[0]; i; i = nxt[i]) if(!vis[i]){
 			del(i);
+			Merge(t, i);
 			que.push(i);
 		}
 		for(int cur = last[t]; ~cur; cur = edges[cur].to) vis[edges[cur].v]--;
@@ -63,10 +59,13 @@ void bfs(int src){
 
 }
 
+vector<int> szs;
 
 int main(){
 	ericxiao;
 	cin >> N >> M;
+	iota(dsu, dsu + N + 1, 0);
+	fill(sz, sz + N + 1, 1);
 	fill(last + 1, last + 1 + N, -1);
 	for(int i = 0; i <= N; i++){
 		prv[i] = i - 1;
@@ -84,5 +83,12 @@ int main(){
 		//cout << "Running bfs(" << nxt[0] << ")" << endl;
 		bfs(i);
 	}
+	for(int i = 1; i <= N; i++){
+		Flat(i);
+		if(i == dsu[i]) szs.push_back(sz[i]);
+	}
+	sort(szs.begin(), szs.end());
 	cout << ans << endl;
+	for(int x : szs) cout << x << " ";
+	cout << endl;
 }

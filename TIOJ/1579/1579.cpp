@@ -8,6 +8,8 @@ int vals[20] = {1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000, 500000
 int has[maxN], N, sum;
 int f(int i, int j){ //1~j using first i
     if(!j) return 0;
+    //cout << "Running f(" << i << ", " << j << ")" << endl;
+    //cout << "vals[" << i << "] = " << vals[i] << endl;
     if(!i) return min(has[0], j);
     int take = min(has[i], j / vals[i]), r = 0;
     //cout << "take = " << take << endl;
@@ -22,3 +24,6 @@ signed main(){
     }
     cout << f(18, sum) << '\n';
 }
+
+
+

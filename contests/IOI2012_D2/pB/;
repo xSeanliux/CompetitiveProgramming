@@ -1,0 +1,62 @@
+#include "advisor.h"
+#include <iostream>
+#include <utility>
+#define pii pair<int,int>
+#define F first
+#define S second
+using namespace std;
+
+const int maxN = 1e5 + 326;
+struct RMQ{
+	pii seg[maxN << 2];
+	int N;
+	inline void pull(int id){
+		seg[id] = max(seg[2 * id + 1], seg[2 * id + 2]);
+	}
+	void build(int id = 0, int l = 0, int r = 0){
+		seg[id] = {-maxN, l};
+		if(l + 1 == r) return;
+		int m = (l + r) / 2;
+		build(2 * id + 1, l, m);
+		build(2 * id + 2, m, r);
+	}
+
+	RMQ(int N = 0): N(N){ build(); }
+
+	void modify(int id, int l, int r, int p, int v){
+		if(l + 1 == r){
+			seg[id].F = v;
+			return;
+		}
+		int m = (l + r) / 2;
+		if(p < m) modify(2 * id + 1, l, m, p, v);
+		else modify(2 * id + 2, m, r, p, v);
+		pull(id);
+	}
+	
+	pii query(int id, int l, int r, int ql, int qr){
+		if(l >= qr || ql >= l) return {-maxN, -maxN};
+		if(l <= ql && r <= qr) return seg[id];
+		int m = (l + r) / 2;
+		return max(query(2 * id + 1, l, m, ql, qr), query(2 * id + 2, m, r, ql, qr));
+	}
+} rmq;
+
+int fur[maxN];
+bool has[maxN];
+
+void ComputeAdvice(int *C, int N, int K, int M) {
+	rmq = RMQ(N);
+	fill(has, has + K, 1);
+	for(int i = N - 1; i >= 0; i--){
+		fur[i] = rmq[0].S;
+		rmq.modify(0, 0, N, C[i], i);
+	}
+	for(int i = 0; i < N; i++){ //thirteen bits lo
+		
+	}
+  WriteAdvice(0);
+  WriteAdvice(1);
+  WriteAdvice(2);
+
+}

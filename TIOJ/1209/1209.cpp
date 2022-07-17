@@ -18,9 +18,6 @@ void dsuMerge(int a, int b){
     ds[ds[a]] = ds[b];
 }
 
-
-
-
 int main(){
     while(cin >> n >> m){
         if(!(n | m)) return 0;

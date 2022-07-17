@@ -1,0 +1,47 @@
+{
+	"global_validators": ["val.cpp"],
+	"subtasks": {
+		"samples": {
+			"index": 0,
+			"score": 0,
+			"text": "範例測資"
+		},
+		"s1": {
+			"index": 1,
+			"score": 7,
+			"text": "只有 `3` 這種運算",
+			"validators": ["val1.cpp"]
+		},
+		"s2": {
+			"index": 2,
+			"score": 10,
+			"text": "$NQ \\leq 10^ 6$",
+			"validators": ["val2.cpp"]
+		},
+		"s3": {
+			"index": 3,
+			"score": 13,
+			"text": "只有 `1` 和 `3` 兩種運算",
+			"validators": ["val3.cpp"]
+		},
+		"s4": {
+			"index": 4,
+			"score": 15,
+			"text": "只有 `2` 和 `3` 兩種運算，且保證所有的 , $m_i$ = 1",
+			"validators": ["val4.cpp"]
+		},
+		"s5": {
+			"index": 5,
+			"score": 20,
+			"text": "只有 `2` 和 `3` 兩種運算",
+			"validators": ["val5.cpp"]
+		},
+		"s6": {
+			"index": 6,
+			"score": 35,
+			"text": "無額外限制",
+			"validators": []
+		}
+	}
+}
+

@@ -1,0 +1,8 @@
+{
+	"sol.cpp": {
+		"verdict": "model_solution"
+	},
+	"wa.cpp": {
+		"verdict": "incorrect"
+	}
+}
